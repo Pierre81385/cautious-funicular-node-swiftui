@@ -30,13 +30,19 @@ connection.once("open", () => {
 io.on('connection', (socket) => {
   console.log('A user connected');
 
-  // Example: Listen for a custom event
-  socket.on('chat message', (msg) => {
-    console.log('Message: ' + msg);
+  // socket.on('userCreated', (newUser) => {
+  //   console.log('New user created:', newUser);
+  // });
 
-    // Emit the message to all connected clients
-    io.emit('chat message', msg);
-  });
+  // // Listen for when a user is updated
+  // socket.on('userUpdated', (updatedUser) => {
+  //   console.log('User updated:', updatedUser);
+  // });
+
+  // // Listen for when a user is deleted
+  // socket.on('userDeleted', (deletedUser) => {
+  //   console.log('User deleted:', deletedUser);
+  // });
 
   // Handle disconnection
   socket.on('disconnect', () => {
