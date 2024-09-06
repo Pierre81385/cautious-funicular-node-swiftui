@@ -19,7 +19,7 @@ enum SocketConfig {
     static let shared = SocketService()
     private let manager: SocketManager
     let socket: SocketIOClient
-    
+     
     private init() {
         let url = URL(string: SocketConfig.development_url)!
         manager = SocketManager(socketURL: url, config: [.log(true), .forceWebsockets(true)])
@@ -30,7 +30,7 @@ enum SocketConfig {
     private func setupSocketConnection() {
         
         socket.on(clientEvent: .connect) { data, ack in
-            self.message = "Socket connected"
+            self.message = "Mobile Socket connected"
         }
         
         socket.connect()

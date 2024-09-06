@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 void main() {
   runApp(const MyApp());
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MySocketApp(),
     );
   }
 }
@@ -120,6 +121,63 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class MySocketApp extends StatefulWidget {
+  @override
+  _MySocketAppState createState() => _MySocketAppState();
+}
+
+class _MySocketAppState extends State<MySocketApp> {
+  late IO.Socket socket;
+
+  @override
+  void initState() {
+    super.initState();
+    
+    // Initialize the Socket.IO client
+    socket = IO.io('http://127.0.0.1:3000', <String, dynamic>{
+      'transports': ['websocket'],
+      'autoConnect': false,
+    });
+
+    // Handle connection
+    socket.on('connect', (_) {
+      print('web connected');
+    });
+
+    // Handle disconnection
+    socket.on('disconnect', (_) {
+      print('web disconnected');
+    });
+
+    // Example: Listen to custom event from the server
+    socket.on('event-name', (data) {
+      print('Received event: $data');
+    });
+
+    // Connect the socket
+    socket.connect();
+  }
+
+  @override
+  void dispose() {
+    // Disconnect the socket when the widget is disposed
+    socket.disconnect();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Socket.IO Client in Flutter Web'),
+      ),
+      body: Center(
+        child: Text('Check the console for socket events'),
+      ),
     );
   }
 }
