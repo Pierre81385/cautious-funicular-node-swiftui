@@ -33,6 +33,10 @@ enum SocketConfig {
             self.message = "Mobile Socket connected"
         }
         
+        socket.on("logged in") { data, ack in
+            self.message = "Successfully logged in."
+        }
+        
         socket.connect()
     }
     

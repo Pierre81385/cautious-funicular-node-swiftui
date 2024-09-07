@@ -13,10 +13,11 @@ struct ContentView: View {
     @Query private var items: [Item]
 
     var body: some View {
-            VStack {
-                Text("Socket.IO Client in SwiftUI Mobile").bold().italic()
-                Text("Check the console for socket events").fontWeight(.ultraLight)
-            }
+//            VStack {
+//                Text("Socket.IO Client in SwiftUI Mobile").bold().italic()
+//                Text("Check the console for socket events").fontWeight(.ultraLight)
+//            }
+        UserView()
             .onAppear{
                         SocketService.shared.socket.connect()
                     }

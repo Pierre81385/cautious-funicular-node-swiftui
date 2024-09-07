@@ -1,14 +1,13 @@
 const router = require("express").Router();
 const User = require("../models/UserModel");
-const { io } = require("../server");
 
 //create
-router.route('/create').post( async (req, res) => {
+router.route('/new').post( async (req, res) => {
     try {
         const newUser = new User(req.body); // Create new User instance from request body
         const savedUser = await newUser.save(); // Save to MongoDB
         res.status(201).json(savedUser);
-        io.emit('userCreated', savedUser);
+        req.io.emit('userCreated', savedUser);
       } catch (error) {
         res.status(400).json({ message: 'Error creating user', error: error.message });
       }
@@ -21,18 +20,35 @@ router.route("/").get( (req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-//read one
+//read one by ID
 router.route("/:id").get( (req, res) => {
   User.findById(req.params.id)
     .then((user) => res.status(200).json(user))
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
+//read one by username
+router.route("/user/:username").get(async (req, res) => {
+  try {
+    console.log(req.params.username); // Log the username to check the incoming request
+
+    const user = await User.findOne({ username: req.params.username });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving user", error: error.message });
+  }
+});
+
 //update
 router.route("/:id").put( async (req, res) => {
   console.log(req);
   await User.findOneAndUpdate(
-    { name: req.params.id },
+    { _id: req.params.id },
     {
       $set: {
         username: req.body.username,
@@ -46,7 +62,7 @@ router.route("/:id").put( async (req, res) => {
   )
     .then((data) => {
       res.status(200).json({ message: "Successfully updated user!" });
-      io.emit('userUpdated', updatedUser);
+      req.io.emit('userUpdated', updatedUser);
     })
     .catch((err) => {
       res.status(400).json("Error: " + err);
@@ -59,7 +75,7 @@ router.route("/:id").delete( (req, res) => {
   User.findByIdAndDelete(id)
     .then(() => {
       res.status(200).json("User deleted!");
-      io.emit('userDeleted', { id });
+      req.io.emit('userDeleted', { id });
     })
     .catch((err) => {
       res.status(400).json("Error: " + err);

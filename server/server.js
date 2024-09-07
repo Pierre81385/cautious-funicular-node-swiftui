@@ -18,7 +18,10 @@ app.get('/', (req, res) => {
 });
 
 const UserRouter = require("./routes/UserRoutes");
-app.use("/users", UserRouter);
+app.use("/users", (req, res, next) => {
+  req.io = io; // Attach io to the request object
+  next();
+}, UserRouter);
 
 mongoose.connect(process.env.MONGODB_URI);
 const connection = mongoose.connection;
@@ -30,9 +33,12 @@ connection.once("open", () => {
 io.on('connection', (socket) => {
   console.log('A user connected');
 
-  // socket.on('userCreated', (newUser) => {
-  //   console.log('New user created:', newUser);
-  // });
+  //need to implement socket event
+
+  socket.on('authenticated', (data) => {
+    console.log(`User Login: ${data.username}`);
+    io.emit("logged in")
+  });
 
   // // Listen for when a user is updated
   // socket.on('userUpdated', (updatedUser) => {
