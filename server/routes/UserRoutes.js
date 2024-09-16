@@ -45,28 +45,31 @@ router.route("/user/:username").get(async (req, res) => {
 });
 
 //update
-router.route("/:id").put( async (req, res) => {
-  console.log(req);
-  await User.findOneAndUpdate(
-    { _id: req.params.id },
-    {
-      $set: {
-        username: req.body.username,
-        email: req.body.email,
-        password: req.body.password,
+router.route("/:id").put(async (req, res) => {
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        $set: {
+          online: req.body.online,
+          username: req.body.username,
+          email: req.body.email,
+          password: req.body.password,
+        },
       },
-    },
-    {
-      new: true,
-    }
-  )
-    .then((data) => {
-      res.status(200).json({ message: "Successfully updated user!" });
-      req.io.emit('userUpdated', updatedUser);
-    })
-    .catch((err) => {
-      res.status(400).json("Error: " + err);
-    });
+      {
+        new: true,
+      }
+    );
+
+    // Send the response
+    res.status(200).json({ message: "Successfully updated user!" });
+
+    // Emit the WebSocket event after the response is sent
+    req.io.emit('userUpdated', updatedUser);
+  } catch (err) {
+    res.status(400).json("Error: " + err);
+  }
 });
 
 //delete

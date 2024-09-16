@@ -34,21 +34,20 @@ io.on('connection', (socket) => {
   console.log('A user connected');
 
   //need to implement socket event
-
-  socket.on('authenticated', (data) => {
-    console.log(`User Login: ${data.username}`);
-    io.emit("logged in")
+  socket.on('newUser', (data) => {
+    console.log(`User created: ${data.username}`);
+    io.emit("userAdded")
   });
 
-  // // Listen for when a user is updated
-  // socket.on('userUpdated', (updatedUser) => {
-  //   console.log('User updated:', updatedUser);
-  // });
+  socket.on('userOnline', () => {
+    console.log(`User Online`);
+    io.emit("updateUsersList")
+  });
 
-  // // Listen for when a user is deleted
-  // socket.on('userDeleted', (deletedUser) => {
-  //   console.log('User deleted:', deletedUser);
-  // });
+  socket.on('userOffline', () => {
+    console.log(`User Offline`);
+    io.emit("updateUsersList")
+  });
 
   // Handle disconnection
   socket.on('disconnect', () => {

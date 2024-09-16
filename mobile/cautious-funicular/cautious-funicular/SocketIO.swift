@@ -19,6 +19,9 @@ enum SocketConfig {
     static let shared = SocketService()
     private let manager: SocketManager
     let socket: SocketIOClient
+    
+    var confirmedServerConnection: Bool = false
+    var userListUpdateRequired: Bool = false
      
     private init() {
         let url = URL(string: SocketConfig.development_url)!
@@ -31,16 +34,18 @@ enum SocketConfig {
         
         socket.on(clientEvent: .connect) { data, ack in
             self.message = "Mobile Socket connected"
+            self.confirmedServerConnection = true
         }
         
-        socket.on("logged in") { data, ack in
-            self.message = "Successfully logged in."
+        socket.on("updateUsersList") { data, ack in
+            self.message = "User logged on or off."
+            self.userListUpdateRequired = true
         }
         
-        socket.connect()
+        //socket.connect()
     }
     
     deinit {
-            socket.disconnect()
+            //socket.disconnect()
         }
 }

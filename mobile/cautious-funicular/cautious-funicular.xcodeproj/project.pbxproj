@@ -17,6 +17,7 @@
 		B1FE5C222C8BC977005FA587 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C212C8BC977005FA587 /* UserModel.swift */; };
 		B1FE5C242C8BC984005FA587 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C232C8BC984005FA587 /* UserViewModel.swift */; };
 		B1FE5C262C8BC99F005FA587 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C252C8BC99F005FA587 /* UserView.swift */; };
+		B1FE5C282C8E3195005FA587 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C272C8E3195005FA587 /* ProfileView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		B1FE5C212C8BC977005FA587 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		B1FE5C232C8BC984005FA587 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		B1FE5C252C8BC99F005FA587 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
+		B1FE5C272C8E3195005FA587 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +90,7 @@
 				B1FE5C212C8BC977005FA587 /* UserModel.swift */,
 				B1FE5C232C8BC984005FA587 /* UserViewModel.swift */,
 				B1FE5C252C8BC99F005FA587 /* UserView.swift */,
+				B1FE5C272C8E3195005FA587 /* ProfileView.swift */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -168,6 +171,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1FE5C282C8E3195005FA587 /* ProfileView.swift in Sources */,
 				B1FE5C0E2C8AB71A005FA587 /* ContentView.swift in Sources */,
 				B1FE5C242C8BC984005FA587 /* UserViewModel.swift in Sources */,
 				B1FE5C102C8AB71A005FA587 /* Item.swift in Sources */,

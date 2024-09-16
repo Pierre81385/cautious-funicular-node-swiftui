@@ -9,6 +9,7 @@ import Foundation
 
 struct UserData: Codable {
     var _id: String?
+    var online: Bool
     var username: String
     var email: String
     var password: String
@@ -17,6 +18,7 @@ struct UserData: Codable {
 
     private enum CodingKeys: String, CodingKey {
         case _id
+        case online
         case username
         case email
         case password
@@ -35,6 +37,7 @@ struct UserData: Codable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(_id, forKey: ._id)
+        try container.encode(online, forKey: .online)
         try container.encode(username, forKey: .username)
         try container.encode(email, forKey: .email)
         try container.encode(password, forKey: .password)
@@ -46,6 +49,7 @@ struct UserData: Codable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         _id = try container.decodeIfPresent(String.self, forKey: ._id)
+        online = try container.decode(Bool.self, forKey: .online)
         username = try container.decode(String.self, forKey: .username)
         email = try container.decode(String.self, forKey: .email)
         password = try container.decode(String.self, forKey: .password)
@@ -53,8 +57,9 @@ struct UserData: Codable {
         dateUpdated = try container.decodeIfPresent(Date.self, forKey: .dateUpdated)
     }
     
-    init(_id: String = "", username: String = "", email: String = "", password: String = "", dateCreated: Date? = nil, dateUpdated: Date? = nil) {
+    init(_id: String = "", online: Bool = false, username: String = "", email: String = "", password: String = "", dateCreated: Date? = nil, dateUpdated: Date? = nil) {
             self._id = _id
+            self.online = online
             self.username = username
             self.email = email
             self.password = password
