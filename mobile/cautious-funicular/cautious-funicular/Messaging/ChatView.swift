@@ -12,16 +12,25 @@ struct ChatView: View {
     var sender: UserData?
     var to: [UserData]?
     @State var chatManager: ChatVM = ChatVM()
+    @State var newChat: Bool = false
+    @State var chatFound: Bool = false
     
     var body: some View {
         VStack{
-            
+           
         }.onAppear{
+            var chatid = 0
             chatManager.chat.participants.append(sender?._id ?? "")
             chatManager.chat.participants.append(to?[0]._id ?? "")
-            chatManager.chat.identifier = combinedHashValue(username1: sender?.username ?? "", username2: to?[0].username ?? "")
+            chatid = combinedHashValue(username1: sender?.username ?? "", username2: to?[0].username ?? "")
+            chatManager.chat.identifier = chatid
             Task{
-                await chatManager.createNewChat()
+                if(await chatManager.fetchChat(byId: chatid)) {
+                    print("Chat Loaded")
+                } else {
+                    newChat = await chatManager.createNewChat()
+
+                }
             }
         }
     }

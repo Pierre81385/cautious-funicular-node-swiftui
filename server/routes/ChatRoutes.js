@@ -12,6 +12,18 @@ router.route('/new').post( async (req, res) => {
       }
   });
 
+router.route('/:identifier').get(async (req, res) => {
+    try {
+        const chat = await Chat.findOne({ identifier: req.params.identifier }); // Find chat by identifier
+        if (!chat) {
+            return res.status(404).json({ message: "Chat not found" });
+        }
+        res.status(200).json(chat);
+    } catch (err) {
+        res.status(400).json("Error: " + err.message);
+    }
+});
+
 router.route('/:id/new').put( async (req, res) => {
     try {
         const updateMessage = await Chat.findOneAndUpdate(

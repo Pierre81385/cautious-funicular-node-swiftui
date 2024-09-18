@@ -45,14 +45,42 @@ import Observation
                     return true
                 } else {
                     self.error = "Error: \(response)"
+                    print(error)
                     return false
                 }
             } catch {
                 self.error = "Error submitting data: \(error.localizedDescription)"
+                print(error)
                 return false
 
             }
         }
+    
+    func fetchChat(byId chatId: Int) async -> Bool {
+        guard let url = URL(string: "\(baseURL)/\(chatId)") else { return false }
+        
+        print("Calling \(url)")
+
+        do {
+            let (data, response) = try await URLSession.shared.data(from: url)
+
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                let decodedChat = try JSONDecoder().decode(ChatData.self, from: data)
+                self.chat = decodedChat
+                print("Chat found!")
+                return true
+            } else {
+                self.error = "Error: No chat found by that ID."
+                print(error)
+                return false
+            }
+        } catch {
+            self.error = "Error fetching chat: \(error.localizedDescription)"
+            print(error)
+            return false
+        }
+        
+    }
 }
 
 //self.identifier = identifier
