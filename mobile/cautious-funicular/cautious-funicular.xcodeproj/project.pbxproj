@@ -18,6 +18,10 @@
 		B1FE5C242C8BC984005FA587 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C232C8BC984005FA587 /* UserViewModel.swift */; };
 		B1FE5C262C8BC99F005FA587 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C252C8BC99F005FA587 /* UserView.swift */; };
 		B1FE5C282C8E3195005FA587 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C272C8E3195005FA587 /* ProfileView.swift */; };
+		B1FE5C2B2C9893EC005FA587 /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C2A2C9893EC005FA587 /* MessageModel.swift */; };
+		B1FE5C312C989DF9005FA587 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C302C989DF9005FA587 /* ChatView.swift */; };
+		B1FE5C332C98A478005FA587 /* ChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C322C98A478005FA587 /* ChatModel.swift */; };
+		B1FE5C352C98A5D6005FA587 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C342C98A5D6005FA587 /* ChatViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +36,10 @@
 		B1FE5C232C8BC984005FA587 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		B1FE5C252C8BC99F005FA587 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
 		B1FE5C272C8E3195005FA587 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		B1FE5C2A2C9893EC005FA587 /* MessageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageModel.swift; sourceTree = "<group>"; };
+		B1FE5C302C989DF9005FA587 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
+		B1FE5C322C98A478005FA587 /* ChatModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModel.swift; sourceTree = "<group>"; };
+		B1FE5C342C98A5D6005FA587 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +75,7 @@
 			children = (
 				B1FE5C0B2C8AB71A005FA587 /* cautious_funicularApp.swift */,
 				B1FE5C0D2C8AB71A005FA587 /* ContentView.swift */,
+				B1FE5C292C9893D1005FA587 /* Messaging */,
 				B1FE5C202C8BC96B005FA587 /* Authentication */,
 				B1FE5C1E2C8AB750005FA587 /* SocketIO.swift */,
 				B1FE5C0F2C8AB71A005FA587 /* Item.swift */,
@@ -87,12 +96,23 @@
 		B1FE5C202C8BC96B005FA587 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
-				B1FE5C212C8BC977005FA587 /* UserModel.swift */,
 				B1FE5C232C8BC984005FA587 /* UserViewModel.swift */,
+				B1FE5C212C8BC977005FA587 /* UserModel.swift */,
 				B1FE5C252C8BC99F005FA587 /* UserView.swift */,
 				B1FE5C272C8E3195005FA587 /* ProfileView.swift */,
 			);
 			path = Authentication;
+			sourceTree = "<group>";
+		};
+		B1FE5C292C9893D1005FA587 /* Messaging */ = {
+			isa = PBXGroup;
+			children = (
+				B1FE5C2A2C9893EC005FA587 /* MessageModel.swift */,
+				B1FE5C322C98A478005FA587 /* ChatModel.swift */,
+				B1FE5C342C98A5D6005FA587 /* ChatViewModel.swift */,
+				B1FE5C302C989DF9005FA587 /* ChatView.swift */,
+			);
+			path = Messaging;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -171,14 +191,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1FE5C352C98A5D6005FA587 /* ChatViewModel.swift in Sources */,
 				B1FE5C282C8E3195005FA587 /* ProfileView.swift in Sources */,
 				B1FE5C0E2C8AB71A005FA587 /* ContentView.swift in Sources */,
 				B1FE5C242C8BC984005FA587 /* UserViewModel.swift in Sources */,
+				B1FE5C312C989DF9005FA587 /* ChatView.swift in Sources */,
 				B1FE5C102C8AB71A005FA587 /* Item.swift in Sources */,
 				B1FE5C1F2C8AB751005FA587 /* SocketIO.swift in Sources */,
 				B1FE5C222C8BC977005FA587 /* UserModel.swift in Sources */,
 				B1FE5C0C2C8AB71A005FA587 /* cautious_funicularApp.swift in Sources */,
+				B1FE5C2B2C9893EC005FA587 /* MessageModel.swift in Sources */,
 				B1FE5C262C8BC99F005FA587 /* UserView.swift in Sources */,
+				B1FE5C332C98A478005FA587 /* ChatModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

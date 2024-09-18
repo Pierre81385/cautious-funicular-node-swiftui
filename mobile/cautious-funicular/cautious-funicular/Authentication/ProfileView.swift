@@ -16,6 +16,7 @@ struct ProfileView: View {
     @State var logout: Bool = false
     @State var collapseProfile: Bool = false
     @State var collapseUsers: Bool = false
+    @State var startChat: Bool = false
     
     var body: some View {
         NavigationStack{
@@ -117,8 +118,12 @@ struct ProfileView: View {
                                     }
                                     Text(user.username)
                                     Spacer()
-                                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                                    Button(action: {
+                                        startChat = true
+                                    }, label: {
                                         Image(systemName: "chevron.forward").foregroundColor(.black)
+                                    }).navigationDestination(isPresented: $startChat, destination: {
+                                        ChatView(sender: userManager.user, to: [user])
                                     })
                                 }.padding()
                             }

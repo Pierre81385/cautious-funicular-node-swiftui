@@ -23,6 +23,12 @@ app.use("/users", (req, res, next) => {
   next();
 }, UserRouter);
 
+const ChatRouter = require("./routes/ChatRoutes");
+app.use("/chats", (req, res, next) => {
+  req.io = io;
+  next();
+}, ChatRouter)
+
 mongoose.connect(process.env.MONGODB_URI);
 const connection = mongoose.connection;
 connection.once("open", () => {
@@ -48,6 +54,16 @@ io.on('connection', (socket) => {
     console.log(`User Offline`);
     io.emit("updateUsersList")
   });
+
+  socket.on('messageSent', (data) => {
+    console.log(`Message Sent in ${data.chat}`);
+    io.emit("updateMessages", data.chat)
+  })
+
+  socket.on('messageDeleted', (data) => {
+    console.log(`Message Deleted in ${data}`);
+    io.emit("updateMessages", data)
+  })
 
   // Handle disconnection
   socket.on('disconnect', () => {
