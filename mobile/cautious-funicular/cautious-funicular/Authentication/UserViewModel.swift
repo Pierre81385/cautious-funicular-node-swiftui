@@ -136,18 +136,18 @@ import Observation
     }
 
     
-    func updateUser(userUdate: UserData) async -> Bool {
-        guard let url = URL(string: "\(baseURL)/\(userUdate._id ?? "NoUser")") else { return false }
+    func updateUser(userUpdate: UserData) async -> Bool {
+        guard let url = URL(string: "\(baseURL)/\(userUpdate._id ?? "NoUser")") else { return false }
 
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
         let body: [String: Any] = [
-            "online": userUdate.online,
-            "username": userUdate.username,
-            "email": userUdate.email,
-            "password": userUdate.password
+            "online": userUpdate.online,
+            "username": userUpdate.username,
+            "email": userUpdate.email,
+            "password": userUpdate.password
         ]
 
         guard let jsonData = try? JSONSerialization.data(withJSONObject: body, options: []) else { return false }

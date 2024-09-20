@@ -22,6 +22,8 @@
 		B1FE5C312C989DF9005FA587 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C302C989DF9005FA587 /* ChatView.swift */; };
 		B1FE5C332C98A478005FA587 /* ChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C322C98A478005FA587 /* ChatModel.swift */; };
 		B1FE5C352C98A5D6005FA587 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C342C98A5D6005FA587 /* ChatViewModel.swift */; };
+		B1FE5C372C9C9686005FA587 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C362C9C9686005FA587 /* MessageView.swift */; };
+		B1FE5C392C9DE565005FA587 /* MessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C382C9DE565005FA587 /* MessageViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +42,8 @@
 		B1FE5C302C989DF9005FA587 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		B1FE5C322C98A478005FA587 /* ChatModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModel.swift; sourceTree = "<group>"; };
 		B1FE5C342C98A5D6005FA587 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
+		B1FE5C362C9C9686005FA587 /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
+		B1FE5C382C9DE565005FA587 /* MessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +112,8 @@
 			isa = PBXGroup;
 			children = (
 				B1FE5C2A2C9893EC005FA587 /* MessageModel.swift */,
+				B1FE5C382C9DE565005FA587 /* MessageViewModel.swift */,
+				B1FE5C362C9C9686005FA587 /* MessageView.swift */,
 				B1FE5C322C98A478005FA587 /* ChatModel.swift */,
 				B1FE5C342C98A5D6005FA587 /* ChatViewModel.swift */,
 				B1FE5C302C989DF9005FA587 /* ChatView.swift */,
@@ -195,7 +201,9 @@
 				B1FE5C282C8E3195005FA587 /* ProfileView.swift in Sources */,
 				B1FE5C0E2C8AB71A005FA587 /* ContentView.swift in Sources */,
 				B1FE5C242C8BC984005FA587 /* UserViewModel.swift in Sources */,
+				B1FE5C392C9DE565005FA587 /* MessageViewModel.swift in Sources */,
 				B1FE5C312C989DF9005FA587 /* ChatView.swift in Sources */,
+				B1FE5C372C9C9686005FA587 /* MessageView.swift in Sources */,
 				B1FE5C102C8AB71A005FA587 /* Item.swift in Sources */,
 				B1FE5C1F2C8AB751005FA587 /* SocketIO.swift in Sources */,
 				B1FE5C222C8BC977005FA587 /* UserModel.swift in Sources */,

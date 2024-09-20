@@ -24,29 +24,30 @@ router.route('/:identifier').get(async (req, res) => {
     }
 });
 
-router.route('/:id/new').put( async (req, res) => {
-    try {
-        const updateMessage = await Chat.findOneAndUpdate(
-          { _id: req.params.id },
+router.route('/:identifier/update').put(async (req, res) => {
+  try {
+      const updatedChat = await Chat.findOneAndUpdate(
+          { identifier: req.params.identifier },
           {
-            $push: {
-                message: req.body.message
-                //need to test if I need to send the message or the entire chat object
-            },
+              $set: {
+                  identifier: req.body.identifier,
+                  participants: req.body.participants,
+                  messages: req.body.messages, 
+                  isPrivate: req.body.isPrivate,
+                  accessCode: req.body.accessCode
+              }
           },
-          {
-            new: true,
-          }
-        );
-    
-        // Send the response
-        res.status(200).json({ message: "Successfully updated user!" });
-    
-        // Emit the WebSocket event after the response is sent
-        req.io.emit('userUpdated', updatedUser);
-      } catch (err) {
-        res.status(400).json("Error: " + err);
-      }
+          { new: true } // Return the updated document
+      );
+
+      // Send the response
+      res.status(200).json({ message: "Successfully updated chat!" });
+
+      // Emit the WebSocket event after the response is sent
+      req.io.emit('chatUpdated', updatedChat);
+  } catch (err) {
+      res.status(400).json("Error: " + err);
+  }
 });
 
 module.exports = router;

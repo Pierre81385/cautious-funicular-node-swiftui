@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const messageSchema = require("./MessageModel");
-// Chat schema that contains an array of messages
+const messageSchema = require("./MessageModel")
+
 const chatSchema = new Schema(
     {
         identifier: {
@@ -14,7 +14,10 @@ const chatSchema = new Schema(
             type: [String], // Array of user IDs (or names/emails)
             required: true
         },
-        messages: [messageSchema], // Array of messages
+        messages: {
+            type: [messageSchema], // Embed array of message subdocuments
+            required: false
+        },
         isPrivate: {
             type: Boolean,
             required: true
@@ -23,18 +26,8 @@ const chatSchema = new Schema(
             type: Number,
             required: true,
         },
-        createdAt: {
-            type: Date,
-            default: Date.now
-        },
-        updatedAt: {
-            type: Date,
-            default: Date.now
-        }
     },
     { timestamps: true } // Adds `createdAt` and `updatedAt` fields automatically
 );
-
 const Chat = mongoose.model('Chat', chatSchema);
-
 module.exports = Chat;

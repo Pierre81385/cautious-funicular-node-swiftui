@@ -9,35 +9,37 @@ import SwiftUI
 import CryptoKit
 
 struct ChatView: View {
-    var sender: UserData?
-    var to: [UserData]?
+    @Binding var sender: UserData
+    var to: UserData
     @State var chatManager: ChatVM = ChatVM()
-    @State var newChat: Bool = false
-    @State var chatFound: Bool = false
+//    @State var messageManager: MessageViewModel = MessageViewModel()
+    @State var chatLoaded: Bool = false
+    @State var chatUpdated: Bool = false
     
     var body: some View {
         VStack{
-           
+            if(!chatLoaded) {
+                ProgressView()
+            } else {
+                MessageView(sender: $sender, chatManager: $chatManager)
+            }
         }.onAppear{
             var chatid = 0
-            chatManager.chat.participants.append(sender?._id ?? "")
-            chatManager.chat.participants.append(to?[0]._id ?? "")
-            chatid = combinedHashValue(username1: sender?.username ?? "", username2: to?[0].username ?? "")
+            chatManager.chat.participants.append(sender._id ?? "")
+            chatManager.chat.participants.append(to._id ?? "")
+            chatid = combinedHashValue(username1: sender.username, username2: to.username)
             chatManager.chat.identifier = chatid
+//            messageManager.message.chat = chatid
             Task{
                 if(await chatManager.fetchChat(byId: chatid)) {
-                    print("Chat Loaded")
+                    chatLoaded = true
                 } else {
-                    newChat = await chatManager.createNewChat()
+                    chatLoaded = await chatManager.createNewChat()
 
                 }
             }
         }
     }
-}
-
-#Preview {
-    ChatView()
 }
 
 func hashToInt(_ input: String) -> Int {

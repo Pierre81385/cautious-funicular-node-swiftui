@@ -1,15 +1,14 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 const messageSchema = new Schema(
     {
-        id: {
-            type: Number,
-            unique: true,
+        _id: {
+            type: String,
             required: true
         },
         sender: {
-            type: String,
+            type: String, // Can be user ID or email
             required: true,
         },
         textContent: {
@@ -17,15 +16,12 @@ const messageSchema = new Schema(
             required: false,
         },
         mediaContent: {
-            type: [String],
+            type: [String], // Array of media file URLs (optional)
             required: false
         },
-        dateCreated: {
-            type: Date,
-            default: Date.now
-        }
-    }
+    },
+    { timestamps: true } // Adds `createdAt` and `updatedAt` for each message
 );
 
-// Export the schema, not the model
+// Export only the schema, not the model
 module.exports = messageSchema;

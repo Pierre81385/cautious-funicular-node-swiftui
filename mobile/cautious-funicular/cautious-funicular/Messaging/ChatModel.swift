@@ -14,14 +14,19 @@ struct ChatData: Decodable {
     var messages: [MessageData]
     var isPrivate: Bool
     var accessCode: Int
-    
-    init(_id: String? = nil, identifier: Int = 0, participants: [String] = [], messages: [MessageData] = [], isPrivate: Bool = false, accessCode: Int = 0) {
+    var dateCreated: Date?
+    var dateUpdated: Date?
+
+    // Initializer with default values
+    init(_id: String? = nil, identifier: Int = 0, participants: [String] = [], messages: [MessageData] = [], isPrivate: Bool = false, accessCode: Int = 0, dateCreated: Date? = nil, dateUpdated: Date? = nil) {
         self._id = _id
         self.identifier = identifier
         self.participants = participants
         self.messages = messages
         self.isPrivate = isPrivate
         self.accessCode = accessCode
+        self.dateCreated = dateCreated
+        self.dateUpdated = dateUpdated
     }
 
     // Custom CodingKeys if JSON keys differ from property names
@@ -32,5 +37,14 @@ struct ChatData: Decodable {
         case messages
         case isPrivate
         case accessCode
+        case dateCreated
+        case dateUpdated
+    }
+
+    // Date Formatter (if the date format needs customization)
+    static var dateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ" // Adjust the format to match your backend's date format
+        return formatter
     }
 }
