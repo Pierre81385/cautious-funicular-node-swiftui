@@ -15,7 +15,7 @@ struct MessageView: View {
 
     var body: some View {
         VStack{
-            List(chatManager.chat.messages, id: \._id) {
+            List(chatManager.chat.messages.reversed(), id: \._id) {
                 message in
                 if(message.sender == sender._id) {
                     SenderMessage(message: message)
@@ -34,6 +34,7 @@ struct MessageView: View {
                     Task{
                         await chatManager.updateChat(byId: chatManager.chat.identifier)
                     }
+                    messageText = ""
                 }, label: {
                     Image(systemName: "paperplane.fill")
                 })

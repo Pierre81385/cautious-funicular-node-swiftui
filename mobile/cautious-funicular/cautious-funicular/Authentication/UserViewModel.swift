@@ -7,13 +7,13 @@
 
 import Foundation
 import Observation
+import CryptoKit
 
 @Observable class UserVM {
     var user: UserData = UserData()
     var users: [UserData] = []
     var baseURL: String = "http://127.0.0.1:3000/users"
     var error: String = ""
-
     
     func createNewUser() async -> Bool {
             guard let url = URL(string: "\(baseURL)/new") else { return false }
@@ -25,6 +25,7 @@ import Observation
 
             // Prepare the JSON body
             let body: [String: Any] = [
+                "identifier": generateUserIdentifier(user.username),
                 "online": user.online,
                 "username": user.username,
                 "email": user.email,
@@ -53,6 +54,28 @@ import Observation
 
             }
         }
+    
+    let max12DigitNumber: UInt64 = 1_000_000_000_000
+    
+    func generateUserIdentifier(_ username: String) -> UInt64 {
+        // Convert the username to UTF-8 data
+        let data = Data(username.utf8)
+        
+        // Compute the SHA-256 hash of the username
+        let hash = SHA256.hash(data: data)
+        
+        // Get the first 8 bytes of the hash
+        let hashPrefix = Array(hash.prefix(8))
+        
+        // Convert the first 8 bytes to a UInt64
+        var result: UInt64 = 0
+        for byte in hashPrefix {
+            result = (result << 8) | UInt64(byte)
+        }
+        
+        // Limit the result to 12 digits using modulo
+        return result % max12DigitNumber
+    }
     
     func authenticateUser() async -> Bool {
         

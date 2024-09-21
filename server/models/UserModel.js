@@ -3,6 +3,11 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
   {
+    identifier: {
+      type: Number,
+      required: true,
+      unique: true
+    },
     online: {
       type: Boolean,
       required: [true, "Online status must be set."]

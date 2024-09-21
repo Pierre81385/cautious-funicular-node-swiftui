@@ -56,7 +56,7 @@ import Observation
             }
         }
     
-    func fetchChat(byId chatId: Int) async -> Bool {
+    func fetchChat(byId chatId: Double) async -> Bool {
         guard let url = URL(string: "\(baseURL)/\(chatId)") else { return false }
         
         print("Calling \(url)")
@@ -102,7 +102,7 @@ import Observation
         return messageDictionaries
     }
     
-    func updateChat(byId chatId: Int) async -> Bool {
+    func updateChat(byId chatId: Double) async -> Bool {
         guard let url = URL(string: "\(baseURL)/\(chatId)/update") else { return false }
 
         var request = URLRequest(url: url)
@@ -134,7 +134,7 @@ import Observation
             let (data, response) = try await URLSession.shared.data(for: request)
 
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                SocketService.shared.socket.emit("chatUpdated")
+//                SocketService.shared.socket.emit("chatUpdated", [chat.identifier])
                 return true
             } else {
                 self.error = "Error: Invalid response"

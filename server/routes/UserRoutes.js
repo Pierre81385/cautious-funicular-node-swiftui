@@ -51,6 +51,7 @@ router.route("/:id").put(async (req, res) => {
       { _id: req.params.id },
       {
         $set: {
+          identifier: req.body.identifier,
           online: req.body.online,
           username: req.body.username,
           email: req.body.email,

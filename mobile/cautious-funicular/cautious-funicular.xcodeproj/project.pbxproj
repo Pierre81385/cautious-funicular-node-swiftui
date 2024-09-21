@@ -100,8 +100,8 @@
 		B1FE5C202C8BC96B005FA587 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
-				B1FE5C232C8BC984005FA587 /* UserViewModel.swift */,
 				B1FE5C212C8BC977005FA587 /* UserModel.swift */,
+				B1FE5C232C8BC984005FA587 /* UserViewModel.swift */,
 				B1FE5C252C8BC99F005FA587 /* UserView.swift */,
 				B1FE5C272C8E3195005FA587 /* ProfileView.swift */,
 			);

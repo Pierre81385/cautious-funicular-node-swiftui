@@ -42,6 +42,9 @@ enum SocketConfig {
             self.userListUpdateRequired = true
         }
         
+        socket.on("chatUpdated") { data, ack in
+            self.message = "Chat identifier \(data) updated."
+        }
         //socket.connect()
     }
     

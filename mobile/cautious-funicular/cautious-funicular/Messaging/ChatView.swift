@@ -16,6 +16,13 @@ struct ChatView: View {
     @State var chatLoaded: Bool = false
     @State var chatUpdated: Bool = false
     
+    let max12DigitNumber: UInt64 = 1_000_000_000_000
+    
+    func combineIdentifiers(_ id1: UInt64, _ id2: UInt64) -> UInt64 {
+        // Safely combine two identifiers using bitwise XOR and limit the result to 12 digits
+        return (id1 ^ id2) % max12DigitNumber
+    }
+    
     var body: some View {
         VStack{
             if(!chatLoaded) {
@@ -24,14 +31,11 @@ struct ChatView: View {
                 MessageView(sender: $sender, chatManager: $chatManager)
             }
         }.onAppear{
-            var chatid = 0
             chatManager.chat.participants.append(sender._id ?? "")
             chatManager.chat.participants.append(to._id ?? "")
-            chatid = combinedHashValue(username1: sender.username, username2: to.username)
-            chatManager.chat.identifier = chatid
-//            messageManager.message.chat = chatid
+            chatManager.chat.identifier = Double(Int(combineIdentifiers(UInt64(sender.identifier), UInt64(to.identifier))))
             Task{
-                if(await chatManager.fetchChat(byId: chatid)) {
+                if(await chatManager.fetchChat(byId: chatManager.chat.identifier)) {
                     chatLoaded = true
                 } else {
                     chatLoaded = await chatManager.createNewChat()
@@ -42,23 +46,4 @@ struct ChatView: View {
     }
 }
 
-func hashToInt(_ input: String) -> Int {
-    // Hash the string using SHA256
-    let hash = SHA256.hash(data: Data(input.utf8))
-    
-    // Convert the hash to an integer by treating it as a hexadecimal number
-    let hexString = hash.compactMap { String(format: "%02x", $0) }.joined()
-    
-    // Convert the hexadecimal string to an integer
-    return Int(hexString.prefix(15), radix: 16) ?? 0 // Limiting to 15 digits for safety
-}
-
-func combinedHashValue(username1: String, username2: String) -> Int {
-    // Hash each username and convert it to an integer
-    let hash1 = hashToInt(username1)
-    let hash2 = hashToInt(username2)
-    
-    // Combined hashes create the unique room identifier so no matter which user initiates, the Chat ID is the same and unique
-    return hash1 + hash2
-}
 
