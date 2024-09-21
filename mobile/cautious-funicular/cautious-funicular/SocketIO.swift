@@ -22,6 +22,7 @@ enum SocketConfig {
     
     var confirmedServerConnection: Bool = false
     var userListUpdateRequired: Bool = false
+    var updateChatMessages: Double?
      
     private init() {
         let url = URL(string: SocketConfig.development_url)!
@@ -42,11 +43,22 @@ enum SocketConfig {
             self.userListUpdateRequired = true
         }
         
-        socket.on("chatUpdated") { data, ack in
-            self.message = "Chat identifier \(data) updated."
+        socket.on("updateChat") { data, ack in
+            self.message = "update messages"
+            if let chatData = data.first as? [String: Any] {
+                    if let identifier = chatData["identifier"] as? Double {
+                        self.updateChatMessages = identifier
+                        print("double \(self.updateChatMessages)")
+                    } else {
+                        self.message = "Chat identifier is not a Double."
+                    }
+                } else {
+                    self.message = "Invalid chat data received."
+                }
         }
-        //socket.connect()
     }
+        //socket.connect()
+    
     
     deinit {
             //socket.disconnect()

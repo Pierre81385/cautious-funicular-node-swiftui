@@ -61,15 +61,10 @@ io.on('connection', (socket) => {
     io.emit("updateUsersList")
   });
 
-  // socket.on('messageSent', (data) => {
-  //   console.log(`Message Sent in ${data.chat}`);
-  //   io.emit("updateMessages", data.chat)
-  // })
-
-  // socket.on('messageDeleted', (data) => {
-  //   console.log(`Message Deleted in ${data}`);
-  //   io.emit("updateMessages", data)
-  // })
+  socket.on('messageSent', (data) => {
+    console.log(data.identifier);
+    io.emit("updateChat", data)
+  })
 
   // Handle disconnection
   socket.on('disconnect', () => {

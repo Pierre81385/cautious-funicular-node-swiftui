@@ -134,7 +134,6 @@ import Observation
             let (data, response) = try await URLSession.shared.data(for: request)
 
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-//                SocketService.shared.socket.emit("chatUpdated", [chat.identifier])
                 return true
             } else {
                 self.error = "Error: Invalid response"

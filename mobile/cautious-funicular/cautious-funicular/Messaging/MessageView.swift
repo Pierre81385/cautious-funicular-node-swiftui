@@ -35,45 +35,53 @@ struct MessageView: View {
                         await chatManager.updateChat(byId: chatManager.chat.identifier)
                     }
                     messageText = ""
+                    SocketService.shared.socket.emit("messageSent", ["identifier": chatManager.chat.identifier])
                 }, label: {
-                    Image(systemName: "paperplane.fill")
+                    Image(systemName: "paperplane.fill").foregroundStyle(.green)
                 })
-            }
+            }.padding()
         }
     }
 }
 
 struct MessageFeed: View {
     var message: MessageData
+    @State var userManager: UserVM = UserVM()
 
     var body: some View {
             HStack {
                 VStack.init(alignment: .leading) {
+                    Text(userManager.user.username).font(.headline)
                     Text(message.textContent)
-                    Text(message.sender).font(.headline)
                 }.rotationEffect(.radians(.pi))
                     .scaleEffect(x: -1, y: 1, anchor: .center)
                 Spacer()
             }.onAppear{
-                //get sender information
+                Task{
+                    await userManager.fetchUser(byId: message.sender)
+                }
             }
         }
 }
 
 struct SenderMessage: View {
     var message: MessageData
+    @State var userManager: UserVM = UserVM()
 
     var body: some View {
         HStack {
             Spacer()
             VStack.init(alignment: .trailing) {
+                Text(userManager.user.username).font(.headline)
                 Text(message.textContent)
-                Text(message.sender).font(.headline)
             }
             .rotationEffect(.radians(.pi))
             .scaleEffect(x: -1, y: 1, anchor: .center)
         }.onAppear{
             //get sender information
+            Task{
+                await userManager.fetchUser(byId: message.sender)
+            }
         }
     }
 }

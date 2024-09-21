@@ -42,9 +42,6 @@ router.route('/:identifier/update').put(async (req, res) => {
 
       // Send the response
       res.status(200).json({ message: "Successfully updated chat!" });
-
-      // Emit the WebSocket event after the response is sent
-      req.io.emit('chatUpdated', updatedChat.identifier);
   } catch (err) {
       res.status(400).json("Error: " + err);
   }

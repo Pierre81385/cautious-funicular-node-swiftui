@@ -28,7 +28,15 @@ struct ChatView: View {
             if(!chatLoaded) {
                 ProgressView()
             } else {
-                MessageView(sender: $sender, chatManager: $chatManager)
+                MessageView(sender: $sender, chatManager: $chatManager).onChange(of: SocketService.shared.updateChatMessages, {
+                    if(SocketService.shared.updateChatMessages == chatManager.chat.identifier) {
+                        Task{
+                            await chatManager.fetchChat(byId: chatManager.chat.identifier)
+                        }
+                        SocketService.shared.updateChatMessages = 0
+                        print("messages up to date.")
+                    }
+                })
             }
         }.onAppear{
             chatManager.chat.participants.append(sender._id ?? "")
@@ -39,7 +47,6 @@ struct ChatView: View {
                     chatLoaded = true
                 } else {
                     chatLoaded = await chatManager.createNewChat()
-
                 }
             }
         }
