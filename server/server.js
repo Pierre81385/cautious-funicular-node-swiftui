@@ -29,12 +29,6 @@ app.use("/chats", (req, res, next) => {
   next();
 }, ChatRouter)
 
-// const MessageRouter = require("./routes/MessageRoutes")
-// app.use("/message", (req, res, next) => {
-//   req.io = io;
-//   next();
-// }, MessageRouter)
-
 mongoose.connect(process.env.MONGODB_URI);
 const connection = mongoose.connection;
 connection.once("open", () => {

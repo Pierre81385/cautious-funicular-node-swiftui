@@ -31,7 +31,9 @@ struct ChatView: View {
                 MessageView(sender: $sender, chatManager: $chatManager).onChange(of: SocketService.shared.updateChatMessages, {
                     if(SocketService.shared.updateChatMessages == chatManager.chat.identifier) {
                         Task{
-                            await chatManager.fetchChat(byId: chatManager.chat.identifier)
+                             
+                                await chatManager.fetchChat(byId: chatManager.chat.identifier)
+                            
                         }
                         SocketService.shared.updateChatMessages = 0
                         print("messages up to date.")

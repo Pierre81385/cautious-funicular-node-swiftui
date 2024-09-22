@@ -115,13 +115,15 @@ struct ProfileView: View {
                                     }
                                     Text(user.username)
                                     Spacer()
-                                    Button(action: {
-                                        startChat = true
-                                    }, label: {
-                                        Image(systemName: "chevron.forward").foregroundColor(.black)
-                                    })
-                                    .navigationDestination(isPresented: $startChat) {
-                                        ChatView(sender: $userManager.user, to: user)
+                                    if(user.online) {
+                                        Button(action: {
+                                            startChat = true
+                                        }, label: {
+                                            Image(systemName: "chevron.forward").foregroundColor(.black)
+                                        })
+                                        .navigationDestination(isPresented: $startChat) {
+                                            ChatView(sender: $userManager.user, to: user).navigationBarBackButtonHidden(true)
+                                        }
                                     }
                                 }
                                 .padding()

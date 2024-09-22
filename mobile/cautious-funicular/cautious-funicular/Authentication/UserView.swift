@@ -17,9 +17,9 @@ struct UserView: View {
     var body: some View {
         NavigationStack{
             VStack{
-                
-                Image(systemName: "ellipsis.message.fill").resizable().frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, height: 100).padding()
+                Spacer()
                 if(new) {
+                    
                     HStack{
                         VStack{
                             Divider()
@@ -28,17 +28,22 @@ struct UserView: View {
                         VStack{
                             Divider()
                         }
-                    }                    
+                    }      
+                    Toggle("New account", isOn: $new).tint(.black).padding()
                     TextField("Email", text: $userManager.user.email).autocorrectionDisabled(true).textInputAutocapitalization(TextInputAutocapitalization.never).padding()
                 } else {
-                    HStack{
-                        VStack{
-                            Divider()
+                    VStack{
+                        HStack{
+                            VStack{
+                                Divider()
+                            }
+                            Text("LOGIN").fontWeight(.ultraLight).font(.system(size: 26))
+                            VStack{
+                                Divider()
+                            }
                         }
-                        Text("LOGIN").fontWeight(.ultraLight).font(.system(size: 26))
-                        VStack{
-                            Divider()
-                        }
+                        Toggle("New account", isOn: $new).tint(.black).padding()
+
                     }
                 }
                 TextField("Username", text: $userManager.user.username).padding()
@@ -46,7 +51,6 @@ struct UserView: View {
                 if(new) {
                     SecureField("Verify Password", text: $verifyPassword).padding()
                 }
-                Toggle("New account", isOn: $new).tint(.black).padding()
                 Button("Submit", action: {
                     if(new) {
                         if(userManager.user.email.isEmpty || userManager.user.username.isEmpty || userManager.user.password.isEmpty) {
@@ -68,13 +72,7 @@ struct UserView: View {
                     .navigationDestination(isPresented: $success, destination: {
                         ProfileView(currentUser: userManager.user).navigationBarBackButtonHidden(true)
                     })
-                Divider().padding()
-                ScrollView(content: {
-                    ForEach(message, id: \.self) {
-                        msg in
-                        Text("> \(msg)").fontWeight(.ultraLight).font(.system(size: 16))
-                    }
-                })
+    
             }.onChange(of: SocketService.shared.message, {
                 message.append(SocketService.shared.message)
             })

@@ -11,35 +11,53 @@ struct MessageView: View {
     @Binding var sender: UserData
     @Binding var chatManager: ChatVM
     @State var messageText: String = ""
+    @State var back: Bool = false
     
 
     var body: some View {
-        VStack{
-            List(chatManager.chat.messages.reversed(), id: \._id) {
-                message in
-                if(message.sender == sender._id) {
-                    SenderMessage(message: message)
-                } else {
-                    MessageFeed(message: message)
-                }
-            }.rotationEffect(.radians(.pi))
-                .scaleEffect(x: -1, y: 1, anchor: .center)
-                .onAppear{
-                }
-            HStack{
-                TextField("Say something...", text: $messageText)
-                Button(action: {
-                    let newMessage = MessageData(sender: sender._id!, textContent: messageText, mediaContent: [])
-                    chatManager.chat.messages.append(newMessage)
-                    Task{
-                        await chatManager.updateChat(byId: chatManager.chat.identifier)
+        NavigationStack{
+            VStack{
+               
+                    HStack{
+                        Button(action: {
+                            back = true
+                        }, label: {
+                            Image(systemName: "chevron.left").foregroundStyle(.black)
+                        }).padding()
+                            .navigationDestination(isPresented: $back, destination: {
+                                ProfileView().navigationBarBackButtonHidden(true)
+                            })
+                        Spacer()
+                        
                     }
+        
+                List(chatManager.chat.messages.reversed(), id: \._id) {
+                    message in
+                    if(message.sender == sender._id) {
+                        SenderMessage(message: message)
+                    } else {
+                        MessageFeed(message: message)
+                    }
+                }.onChange(of: chatManager.chat.messages, {
                     messageText = ""
-                    SocketService.shared.socket.emit("messageSent", ["identifier": chatManager.chat.identifier])
-                }, label: {
-                    Image(systemName: "paperplane.fill").foregroundStyle(.green)
                 })
-            }.padding()
+                .rotationEffect(.radians(.pi))
+                    .scaleEffect(x: -1, y: 1, anchor: .center)
+                HStack{
+                    TextField("Say something...", text: $messageText)
+                    Button(action: {
+                        let newMessage = MessageData(sender: sender._id!, textContent: messageText, mediaContent: [])
+                        chatManager.chat.messages.append(newMessage)
+                        Task{
+                            await chatManager.updateChat(byId: chatManager.chat.identifier)
+                        }
+//                        messageText = ""
+                        SocketService.shared.socket.emit("messageSent", ["identifier": chatManager.chat.identifier])
+                    }, label: {
+                        Image(systemName: "paperplane.fill").foregroundStyle(.green)
+                    })
+                }.padding()
+            }
         }
     }
 }

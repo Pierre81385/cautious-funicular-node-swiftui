@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
+//Message is a subdocument of Chat
+
 const messageSchema = new Schema(
     {
         _id: {

@@ -111,12 +111,12 @@
 		B1FE5C292C9893D1005FA587 /* Messaging */ = {
 			isa = PBXGroup;
 			children = (
-				B1FE5C2A2C9893EC005FA587 /* MessageModel.swift */,
-				B1FE5C382C9DE565005FA587 /* MessageViewModel.swift */,
-				B1FE5C362C9C9686005FA587 /* MessageView.swift */,
 				B1FE5C322C98A478005FA587 /* ChatModel.swift */,
 				B1FE5C342C98A5D6005FA587 /* ChatViewModel.swift */,
 				B1FE5C302C989DF9005FA587 /* ChatView.swift */,
+				B1FE5C2A2C9893EC005FA587 /* MessageModel.swift */,
+				B1FE5C382C9DE565005FA587 /* MessageViewModel.swift */,
+				B1FE5C362C9C9686005FA587 /* MessageView.swift */,
 			);
 			path = Messaging;
 			sourceTree = "<group>";

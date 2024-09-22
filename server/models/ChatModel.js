@@ -3,6 +3,7 @@ const { Schema } = mongoose;
 
 const messageSchema = require("./MessageModel")
 
+//All conversations between users occur within the context of a single Chat document with Message subdocuments
 const chatSchema = new Schema(
     {
         identifier: {
