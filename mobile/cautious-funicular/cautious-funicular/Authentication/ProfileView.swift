@@ -10,6 +10,7 @@ struct ProfileView: View {
     @State var collapseProfile: Bool = false
     @State var collapseUsers: Bool = false
     @State var startChat: Bool = false
+    @State var updatingUsers: Bool = false
 
     var body: some View {
         NavigationStack {
@@ -29,6 +30,9 @@ struct ProfileView: View {
                         UserView().navigationBarBackButtonHidden(true)
                     }
                     Spacer()
+                    if(updatingUsers) {
+                        ProgressView().padding()
+                    }
                 }
                 
                 HStack {
@@ -131,15 +135,18 @@ struct ProfileView: View {
                         }
                     }
                     .onChange(of: SocketService.shared.userListUpdateRequired) { updateRequired in
+                        updatingUsers = SocketService.shared.userListUpdateRequired
                         if updateRequired {
                             Task {
                                 let updated = await userManager.fetchAllUsers()
                                 if updated {
                                     SocketService.shared.userListUpdateRequired = false
+                                    updatingUsers = SocketService.shared.userListUpdateRequired
                                 }
                             }
                         }
                     }
+                  
                 }
                 
                 Spacer()
