@@ -10,7 +10,7 @@ For events that require realtime updates like new user creation, user deletion, 
 
 # api
 
-##User Endpoints
+## User Endpoints
 
 POST "Create new user" http://localhost:3000/users/new
 
@@ -24,7 +24,7 @@ PUT "Update user by user _id" http://localhost:3000/users/{user._id}
 
 DELETE "Delete user by user _id" http://localhost:3000/users/{user._id}
 
-##Chat Endpoints
+## Chat Endpoints
 
 POST "Create new chat" http://localhost:3000/chats/new
 
