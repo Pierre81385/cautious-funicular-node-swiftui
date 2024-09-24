@@ -71,8 +71,12 @@ struct ChatView: View {
                 }
             }
         }.onAppear{
-            chatManager.chat.participants.append(sender._id ?? "")
-            chatManager.chat.participants.append(to._id ?? "")
+            if(!chatManager.chat.participants.contains(sender._id!)) {
+                chatManager.chat.participants.append(sender._id ?? "")
+            }
+            if(!chatManager.chat.participants.contains(to._id!)) {
+                chatManager.chat.participants.append(to._id ?? "")
+            }
             chatManager.chat.identifier = Double(Int(combineIdentifiers(UInt64(sender.identifier), UInt64(to.identifier))))
             Task{
                 if(await chatManager.fetchChat(byId: chatManager.chat.identifier)) {
@@ -83,7 +87,9 @@ struct ChatView: View {
                 for id in chatManager.chat.participants {
                     try await userManager.fetchUser(byId: id)
                     let user = userManager.user
-                    chatParticipants.append(user)
+                    if !chatParticipants.contains(where: { $0 == user }) {
+                        chatParticipants.append(user)
+                    }
                 }
 
             }

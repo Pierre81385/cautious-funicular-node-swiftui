@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UserData: Codable {
+struct UserData: Codable, Equatable {
     var _id: String?
     var identifier: Double
     var online: Bool
