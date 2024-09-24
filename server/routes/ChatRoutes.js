@@ -2,6 +2,7 @@ const router = require("express").Router();
 const Chat = require("../models/ChatModel");
 const Message = require("../models/MessageModel");
 
+//http://localhost:3000/chats/new
 router.route('/new').post( async (req, res) => {
     try {
         const newChat = new Chat(req.body); // Create new User instance from request body
@@ -12,6 +13,7 @@ router.route('/new').post( async (req, res) => {
       }
   });
 
+//http://localhost:3000/chats/{chat.identifier}
 router.route('/:identifier').get(async (req, res) => {
     try {
         const chat = await Chat.findOne({ identifier: req.params.identifier }); // Find chat by identifier
@@ -24,6 +26,7 @@ router.route('/:identifier').get(async (req, res) => {
     }
 });
 
+//http://localhost:3000/chats/{chat.identifier}/update
 router.route('/:identifier/update').put(async (req, res) => {
   try {
       const updatedChat = await Chat.findOneAndUpdate(

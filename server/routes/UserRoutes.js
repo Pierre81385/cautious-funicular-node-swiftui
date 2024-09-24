@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const User = require("../models/UserModel");
 
-//create
+//http://localhost:3000/users/new
 router.route('/new').post( async (req, res) => {
     try {
         const newUser = new User(req.body); // Create new User instance from request body
@@ -13,21 +13,21 @@ router.route('/new').post( async (req, res) => {
       }
   });
 
-//read all
+//http://localhost:3000/users/
 router.route("/").get( (req, res) => {
   User.find()
     .then((users) => res.status(200).json(users))
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-//read one by ID
+//http://localhost:3000/users/{user._id}
 router.route("/:id").get( (req, res) => {
   User.findById(req.params.id)
     .then((user) => res.status(200).json(user))
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-//read one by username
+//http://localhost:3000/users/user/{user.username}=
 router.route("/user/:username").get(async (req, res) => {
   try {
     console.log(req.params.username); // Log the username to check the incoming request
@@ -44,7 +44,7 @@ router.route("/user/:username").get(async (req, res) => {
   }
 });
 
-//update
+//http://localhost:3000/users/{user._id}
 router.route("/:id").put(async (req, res) => {
   try {
     const updatedUser = await User.findOneAndUpdate(
@@ -73,7 +73,7 @@ router.route("/:id").put(async (req, res) => {
   }
 });
 
-//delete
+//http://localhost:3000/users/{user._id}
 router.route("/:id").delete( (req, res) => {
   const { id } = req.params;
   User.findByIdAndDelete(id)
