@@ -12,9 +12,11 @@ struct ChatView: View {
     @Binding var sender: UserData
     var to: UserData
     @State var chatManager: ChatVM = ChatVM()
-//    @State var messageManager: MessageViewModel = MessageViewModel()
+    @State var userManager: UserVM = UserVM()
     @State var chatLoaded: Bool = false
     @State var chatUpdated: Bool = false
+    @State var chatParticipants: [UserData] = []
+    @State var back: Bool = false
     
     let max12DigitNumber: UInt64 = 1_000_000_000_000
     
@@ -28,17 +30,45 @@ struct ChatView: View {
             if(!chatLoaded) {
                 ProgressView()
             } else {
-                MessageView(sender: $sender, chatManager: $chatManager).onChange(of: SocketService.shared.updateChatMessages, {
-                    if(SocketService.shared.updateChatMessages == chatManager.chat.identifier) {
-                        Task{
-                             
+                ZStack{
+                    MessageView(sender: $sender, chatManager: $chatManager).onChange(of: SocketService.shared.updateChatMessages, {
+                        if(SocketService.shared.updateChatMessages == chatManager.chat.identifier) {
+                            Task{
+                                
                                 await chatManager.fetchChat(byId: chatManager.chat.identifier)
-                            
+                                
+                            }
+                            SocketService.shared.updateChatMessages = 0
+                            print("messages up to date.")
                         }
-                        SocketService.shared.updateChatMessages = 0
-                        print("messages up to date.")
+                    })
+                    VStack{
+                        HStack{
+                            Button(action: {
+                                back = true
+                            }, label: {
+                                Image(systemName: "chevron.left")
+                                        .foregroundColor(.white)  // White text (icon color)
+                                        .padding()  // Add padding to make the button larger
+                                        .background(Circle().fill(Color.black))  // Circular black background
+                                        .shadow(color: .black.opacity(0.3), radius: 5, x: 0, y: 5)  // Drop shadow
+                            }).padding()
+                                .navigationDestination(isPresented: $back, destination: {
+                                    ProfileView(currentUser: sender).navigationBarBackButtonHidden(true)
+                                })
+                            Spacer()
+                            ForEach(chatParticipants, id: \._id) {
+                                user in
+                                Text("\(user.username) ")
+                                    .foregroundColor(.white)  // White text (icon color)
+                                    .padding()  // Add padding to make the button larger
+                                    .background(RoundedRectangle(cornerSize: CGSize(width: 5, height: 5)).fill(Color.black))  // Circular black background
+                                    .shadow(color: .black.opacity(0.3), radius: 5, x: 0, y: 5)  // Drop shadow
+                            }
+                        }.padding()
+                        Spacer()
                     }
-                })
+                }
             }
         }.onAppear{
             chatManager.chat.participants.append(sender._id ?? "")
@@ -50,7 +80,14 @@ struct ChatView: View {
                 } else {
                     chatLoaded = await chatManager.createNewChat()
                 }
+                for id in chatManager.chat.participants {
+                    try await userManager.fetchUser(byId: id)
+                    let user = userManager.user
+                    chatParticipants.append(user)
+                }
+
             }
+            
         }
     }
 }

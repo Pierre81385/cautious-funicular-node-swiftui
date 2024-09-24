@@ -11,6 +11,8 @@ struct ProfileView: View {
     @State var collapseUsers: Bool = false
     @State var startChat: Bool = false
     @State var updatingUsers: Bool = false
+    @State var showGroupMessage: Bool = false
+    @State var selectedGroup: Bool = false
 
     var body: some View {
         NavigationStack {
@@ -108,16 +110,29 @@ struct ProfileView: View {
                 }
                 
                 if !collapseUsers {
+
                     ScrollView {
                         ForEach(userManager.users, id: \._id) { user in
                             if user._id != (userManager.user._id ?? "") {
                                 HStack {
                                     if user.online {
-                                        Image(systemName: "wifi").foregroundColor(.green)
+                                        HStack{
+                                            Image(systemName: "wifi").foregroundColor(.green)
+                                            Text(user.username)
+//                                            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+//                                                Image(systemName: "location.fill")
+//                                            }).padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5))
+                                        }
                                     } else {
-                                        Image(systemName: "wifi.slash").foregroundColor(.gray)
+                                        HStack{
+                                            Image(systemName: "wifi.slash").foregroundColor(.gray)
+                                            Text(user.username)
+//                                            Image(systemName: "location.slash.fill").foregroundColor(.gray).padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5))
+                                        }
                                     }
-                                    Text(user.username)
+//                                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+//                                        Image(systemName: "photo.stack.fill").foregroundColor(.teal)
+//                                    }).padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5))
                                     Spacer()
                                     if(user.online) {
                                         Button(action: {

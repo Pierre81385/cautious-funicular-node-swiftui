@@ -11,26 +11,11 @@ struct MessageView: View {
     @Binding var sender: UserData
     @Binding var chatManager: ChatVM
     @State var messageText: String = ""
-    @State var back: Bool = false
     
 
     var body: some View {
         NavigationStack{
             VStack{
-               
-                    HStack{
-                        Button(action: {
-                            back = true
-                        }, label: {
-                            Image(systemName: "chevron.left").foregroundStyle(.black)
-                        }).padding()
-                            .navigationDestination(isPresented: $back, destination: {
-                                ProfileView().navigationBarBackButtonHidden(true)
-                            })
-                        Spacer()
-                        
-                    }
-        
                 List(chatManager.chat.messages.reversed(), id: \._id) {
                     message in
                     if(message.sender == sender._id) {
