@@ -11,6 +11,8 @@ struct MessageView: View {
     @Binding var sender: UserData
     @Binding var chatManager: ChatVM
     @State var messageText: String = ""
+    @State var showImagePicker: Bool = false
+    @State var imageManager: ImagePickerViewModel = ImagePickerViewModel()
     
 
     var body: some View {
@@ -23,12 +25,20 @@ struct MessageView: View {
                     } else {
                         MessageFeed(message: message)
                     }
-                }.onChange(of: chatManager.chat.messages, {
+                }.ignoresSafeArea(edges: .top)
+                .onChange(of: chatManager.chat.messages, {
                     messageText = ""
                 })
                 .rotationEffect(.radians(.pi))
                     .scaleEffect(x: -1, y: 1, anchor: .center)
                 HStack{
+                    Button(action: {
+                        showImagePicker = true
+                    }, label: {
+                        Image(systemName: "photo.on.rectangle.fill").tint(.black)
+                    }).sheet(isPresented: $showImagePicker, content: {
+                        MediaPickerView(imagePickerVM: $imageManager)
+                    })
                     TextField("Say something...", text: $messageText)
                     Button(action: {
                         let newMessage = MessageData(sender: sender._id!, textContent: messageText, mediaContent: [])

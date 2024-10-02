@@ -17,6 +17,7 @@ struct ChatView: View {
     @State var chatUpdated: Bool = false
     @State var chatParticipants: [UserData] = []
     @State var back: Bool = false
+    @State var hideUsers: Bool = true
     
     let max12DigitNumber: UInt64 = 1_000_000_000_000
     
@@ -44,31 +45,58 @@ struct ChatView: View {
                     })
                     VStack{
                         HStack{
-                            Button(action: {
-                                back = true
-                            }, label: {
-                                Image(systemName: "chevron.left")
+                            VStack{
+                                Button(action: {
+                                    back = true
+                                }, label: {
+                                    Image(systemName: "chevron.left")
                                         .foregroundColor(.white)  // White text (icon color)
                                         .padding()  // Add padding to make the button larger
                                         .background(Circle().fill(Color.black))  // Circular black background
                                         .shadow(color: .black.opacity(0.3), radius: 5, x: 0, y: 5)  // Drop shadow
-                            }).padding()
-                                .navigationDestination(isPresented: $back, destination: {
-                                    ProfileView(currentUser: sender).navigationBarBackButtonHidden(true)
-                                })
-                            Spacer()
-                            ForEach(chatParticipants, id: \._id) {
-                                user in
-                                Text("\(user.username) ")
-                                    .foregroundColor(.white)  // White text (icon color)
-                                    .padding()  // Add padding to make the button larger
-                                    .background(RoundedRectangle(cornerSize: CGSize(width: 5, height: 5)).fill(Color.black))  // Circular black background
-                                    .shadow(color: .black.opacity(0.3), radius: 5, x: 0, y: 5)  // Drop shadow
+                                }).padding()
+                                    .navigationDestination(isPresented: $back, destination: {
+                                        ProfileView(currentUser: sender).navigationBarBackButtonHidden(true)
+                                    })
+                                Spacer()
                             }
+                            Spacer()
+                            VStack{
+                                
+                                if (!hideUsers) {
+                                    ForEach(chatParticipants, id: \._id) {
+                                        user in
+                                        Text("\(user.username) ")
+                                            .foregroundColor(.white)  // White text (icon color)
+                                            .padding()  // Add padding to make the button larger
+                                            .background(RoundedRectangle(cornerSize: CGSize(width: 5, height: 5)).fill(Color.black))  // Circular black background
+                                            .shadow(color: .black.opacity(0.3), radius: 5, x: 0, y: 5)  // Drop shadow
+                                    }
+                                }
+                                Button(action: {
+                                    hideUsers.toggle()
+                                }, label: {
+                                    if(hideUsers) {
+                                        Image(systemName: "person")
+                                            .foregroundColor(.white)  // White text (icon color)
+                                            .padding()
+                                            .background(Circle().fill(Color.black))  // Circular black background
+                                            .shadow(color: .black.opacity(0.3), radius: 5, x: 0, y: 5)  // Drop shadow
+                                    } else {// Drop shadow
+                                        Image(systemName: "chevron.up")
+                                            .foregroundColor(.white)  // White text (icon color)
+                                            .padding()  // Add padding to make the button larger
+                                            .background(Circle().fill(Color.black))  // Circular black background
+                                            .shadow(color: .black.opacity(0.3), radius: 5, x: 0, y: 5)  // Drop shadow
+                                    }
+                                })
+                                Spacer()
+                                
+                            }.padding()
                         }.padding()
                         Spacer()
-                    }
-                }
+                    }.padding()
+                }.ignoresSafeArea(edges: .top)
             }
         }.onAppear{
             if(!chatManager.chat.participants.contains(sender._id!)) {

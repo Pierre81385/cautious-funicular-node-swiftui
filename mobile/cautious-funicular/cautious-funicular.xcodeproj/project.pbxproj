@@ -26,6 +26,9 @@
 		B1FE5C392C9DE565005FA587 /* MessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C382C9DE565005FA587 /* MessageViewModel.swift */; };
 		B1FE5C3C2CA12DC7005FA587 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C3B2CA12DC7005FA587 /* LocationManager.swift */; };
 		B1FE5C3E2CA130F3005FA587 /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C3D2CA130F3005FA587 /* LocationView.swift */; };
+		B1FE5C412CA328E4005FA587 /* ImageHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C402CA328E4005FA587 /* ImageHelpers.swift */; };
+		B1FE5C432CA32930005FA587 /* ImagePickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C422CA32930005FA587 /* ImagePickerViewModel.swift */; };
+		B1FE5C452CA32A07005FA587 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C442CA32A07005FA587 /* ImageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +51,9 @@
 		B1FE5C382C9DE565005FA587 /* MessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewModel.swift; sourceTree = "<group>"; };
 		B1FE5C3B2CA12DC7005FA587 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		B1FE5C3D2CA130F3005FA587 /* LocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationView.swift; sourceTree = "<group>"; };
+		B1FE5C402CA328E4005FA587 /* ImageHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHelpers.swift; sourceTree = "<group>"; };
+		B1FE5C422CA32930005FA587 /* ImagePickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerViewModel.swift; sourceTree = "<group>"; };
+		B1FE5C442CA32A07005FA587 /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +89,7 @@
 			children = (
 				B1FE5C0B2C8AB71A005FA587 /* cautious_funicularApp.swift */,
 				B1FE5C0D2C8AB71A005FA587 /* ContentView.swift */,
+				B1FE5C3F2CA3278B005FA587 /* Images */,
 				B1FE5C3A2CA12A94005FA587 /* Location */,
 				B1FE5C292C9893D1005FA587 /* Messaging */,
 				B1FE5C202C8BC96B005FA587 /* Authentication */,
@@ -133,6 +140,16 @@
 				B1FE5C3D2CA130F3005FA587 /* LocationView.swift */,
 			);
 			path = Location;
+			sourceTree = "<group>";
+		};
+		B1FE5C3F2CA3278B005FA587 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				B1FE5C402CA328E4005FA587 /* ImageHelpers.swift */,
+				B1FE5C422CA32930005FA587 /* ImagePickerViewModel.swift */,
+				B1FE5C442CA32A07005FA587 /* ImageView.swift */,
+			);
+			path = Images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -212,6 +229,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B1FE5C352C98A5D6005FA587 /* ChatViewModel.swift in Sources */,
+				B1FE5C452CA32A07005FA587 /* ImageView.swift in Sources */,
 				B1FE5C3E2CA130F3005FA587 /* LocationView.swift in Sources */,
 				B1FE5C282C8E3195005FA587 /* ProfileView.swift in Sources */,
 				B1FE5C3C2CA12DC7005FA587 /* LocationManager.swift in Sources */,
@@ -220,8 +238,10 @@
 				B1FE5C392C9DE565005FA587 /* MessageViewModel.swift in Sources */,
 				B1FE5C312C989DF9005FA587 /* ChatView.swift in Sources */,
 				B1FE5C372C9C9686005FA587 /* MessageView.swift in Sources */,
+				B1FE5C412CA328E4005FA587 /* ImageHelpers.swift in Sources */,
 				B1FE5C102C8AB71A005FA587 /* Item.swift in Sources */,
 				B1FE5C1F2C8AB751005FA587 /* SocketIO.swift in Sources */,
+				B1FE5C432CA32930005FA587 /* ImagePickerViewModel.swift in Sources */,
 				B1FE5C222C8BC977005FA587 /* UserModel.swift in Sources */,
 				B1FE5C0C2C8AB71A005FA587 /* cautious_funicularApp.swift in Sources */,
 				B1FE5C2B2C9893EC005FA587 /* MessageModel.swift in Sources */,
@@ -363,6 +383,7 @@
 				DEVELOPMENT_TEAM = 6W56PZLJZG;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app would like to use your location to share with other users when you choose.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -392,6 +413,7 @@
 				DEVELOPMENT_TEAM = 6W56PZLJZG;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app would like to use your location to share with other users when you choose.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

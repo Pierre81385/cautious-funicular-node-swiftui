@@ -1,101 +1,101 @@
+////
+////  LocationView.swift
+////  cautious-funicular
+////
+////  Created by m1_air on 9/22/24.
+////
 //
-//  LocationView.swift
-//  cautious-funicular
+//import SwiftUI
+//import MapKit
 //
-//  Created by m1_air on 9/22/24.
+//struct UserMapView: View {
 //
-
-import SwiftUI
-import MapKit
-
-struct UserMapView: View {
-
-    @State private var locationManager = LocationManager()
-    
-    var body: some View {
-        VStack{
-            VStack {
-                switch locationManager.authorizationStatus {
-                case .notDetermined:
-                    Text("Requesting permission...")
-                case .restricted, .denied:
-                    Text("Location access denied.")
-                case .authorizedWhenInUse, .authorizedAlways:
-                    if let location = locationManager.location {
-                            Map {
-//                                Annotation(authManager.currentUser?.displayName ?? "No Name", coordinate: location.coordinate) 
-//                                {
-//                                    VStack{
-//                                        Circle()
-//                                            .fill(Color.white)
-//                                            .frame(width: 30, height: 30)
-//                                            .overlay {
-//                                                if(authManager.currentUser?.photoURL != nil) {
-//                                                    AsyncAwaitImageView(imageUrl: (authManager.currentUser?.photoURL)!)
-//                                                        .scaledToFill()
-//                                                        .frame(width: 50, height: 50)
-//                                                        .clipShape(Circle())
-//                                                } else {
-//                                                    Image(systemName: "person.circle.fill")
-//                                                        .resizable()
-//                                                        .aspectRatio(contentMode: .fit)
-//                                                }
-//                                                
-//                                            }
-//                                            .padding()
-//                                    }
-//                                }
-//                                ForEach(contentManager.queriedContent.indices, id: \.self) {
-//                                    index in
-//                                    Annotation(contentManager.queriedContent[index].title, coordinate: contentManager.queriedContent[index].locationCoordinate) {
-//                                        VStack{
-//                                            Circle()
-//                                                .fill(Color.white)
-//                                                .frame(width: 30, height: 30)
-//                                                .overlay {
-//                                                    AsyncAwaitImageView(imageUrl: (URL(string: contentManager.queriedContent[index].images[0])!))
-//                                                            .scaledToFill()
-//                                                            .frame(width: 50, height: 50)
-//                                                            .clipShape(Circle())
-//                                                }
-//                                                .padding()
-//                                        }
-//                                    }
-//                                }
-                            }.mapControls {
-                                MapUserLocationButton()
-                                MapCompass()
-                                MapScaleView()
-                            }
-                            .frame(height: UIScreen.main.bounds.height * 0.7) // Set height to half of the viewport
-                                       .cornerRadius(10) // Adjust the corner radius as needed
-                                       .padding() //
-                        
-                        
-                    } else {
-                        Text("Fetching location...")
-                    }
-                default:
-                    Text("Error determining location.")
-                }
-                
-            }
-            .onAppear {
-                locationManager.startUpdatingLocation()
-            }
-            .onDisappear {
-                locationManager.stopUpdatingLocation()
-            }
-            
-        }.onAppear{
-//            authManager.GetCurrentUser()
-//            Task{
-//                await contentManager.getContents()
+//    @State private var locationManager = LocationManager()
+//    
+//    var body: some View {
+//        VStack{
+//            VStack {
+//                switch locationManager.authorizationStatus {
+//                case .notDetermined:
+//                    Text("Requesting permission...")
+//                case .restricted, .denied:
+//                    Text("Location access denied.")
+//                case .authorizedWhenInUse, .authorizedAlways:
+//                    if let location = locationManager.location {
+//                            Map {
+////                                Annotation(authManager.currentUser?.displayName ?? "No Name", coordinate: location.coordinate)
+////                                {
+////                                    VStack{
+////                                        Circle()
+////                                            .fill(Color.white)
+////                                            .frame(width: 30, height: 30)
+////                                            .overlay {
+////                                                if(authManager.currentUser?.photoURL != nil) {
+////                                                    AsyncAwaitImageView(imageUrl: (authManager.currentUser?.photoURL)!)
+////                                                        .scaledToFill()
+////                                                        .frame(width: 50, height: 50)
+////                                                        .clipShape(Circle())
+////                                                } else {
+////                                                    Image(systemName: "person.circle.fill")
+////                                                        .resizable()
+////                                                        .aspectRatio(contentMode: .fit)
+////                                                }
+////
+////                                            }
+////                                            .padding()
+////                                    }
+////                                }
+////                                ForEach(contentManager.queriedContent.indices, id: \.self) {
+////                                    index in
+////                                    Annotation(contentManager.queriedContent[index].title, coordinate: contentManager.queriedContent[index].locationCoordinate) {
+////                                        VStack{
+////                                            Circle()
+////                                                .fill(Color.white)
+////                                                .frame(width: 30, height: 30)
+////                                                .overlay {
+////                                                    AsyncAwaitImageView(imageUrl: (URL(string: contentManager.queriedContent[index].images[0])!))
+////                                                            .scaledToFill()
+////                                                            .frame(width: 50, height: 50)
+////                                                            .clipShape(Circle())
+////                                                }
+////                                                .padding()
+////                                        }
+////                                    }
+////                                }
+//                            }.mapControls {
+//                                MapUserLocationButton()
+//                                MapCompass()
+//                                MapScaleView()
+//                            }
+//                            .frame(height: UIScreen.main.bounds.height * 0.7) // Set height to half of the viewport
+//                                       .cornerRadius(10) // Adjust the corner radius as needed
+//                                       .padding() //
+//                        
+//                        
+//                    } else {
+//                        Text("Fetching location...")
+//                    }
+//                default:
+//                    Text("Error determining location.")
+//                }
+//                
 //            }
-        }
-    }
-}
-
-#Preview {
-    UserMapView()
-}
+//            .onAppear {
+//                locationManager.startUpdatingLocation()
+//            }
+//            .onDisappear {
+//                locationManager.stopUpdatingLocation()
+//            }
+//            
+//        }.onAppear{
+////            authManager.GetCurrentUser()
+////            Task{
+////                await contentManager.getContents()
+////            }
+//        }
+//    }
+//}
+//
+//#Preview {
+//    UserMapView()
+//}

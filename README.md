@@ -8,9 +8,9 @@ Node/Express server hosts the API allowing the apps conneting to it to perform C
 
 For events that require realtime updates like new user creation, user deletion, message creation, or online/offline status, websocket events trigger updates to fetch new data and re-render.
 
-# api
+# API
 
-## User Endpoints
+## - User Endpoints
 
 POST "Create new user" http://localhost:3000/users/new
 
@@ -18,13 +18,13 @@ GET "Get all users" http://localhost:3000/users/
 
 GET "Get user by user _id" http://localhost:3000/users/{user._id}
 
-GET "Get user by username" http://localhost:3000/users/user/{user.username}=
+GET "Get user by username" http://localhost:3000/users/user/{user.username}
 
 PUT "Update user by user _id" http://localhost:3000/users/{user._id}
 
 DELETE "Delete user by user _id" http://localhost:3000/users/{user._id}
 
-## Chat Endpoints
+## - Chat Endpoints
 
 POST "Create new chat" http://localhost:3000/chats/new
 

@@ -29,6 +29,12 @@ app.use("/chats", (req, res, next) => {
   next();
 }, ChatRouter)
 
+const ImgRouter = require("./routes/ImageRoutes");
+app.use("/imgs", (req, res, next) => {
+  req.io = io;
+  next();
+}, ImgRouter)
+
 mongoose.connect(process.env.MONGODB_URI);
 const connection = mongoose.connection;
 connection.once("open", () => {
