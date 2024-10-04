@@ -62,7 +62,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('messageSent', (data) => {
-    console.log(data.identifier);
+    console.log(`Message sent in ${data.identifier}`);
     io.emit("updateChat", data)
   })
 

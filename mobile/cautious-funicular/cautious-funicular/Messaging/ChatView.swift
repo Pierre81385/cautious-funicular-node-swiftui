@@ -14,7 +14,6 @@ struct ChatView: View {
     @State var chatManager: ChatVM = ChatVM()
     @State var userManager: UserVM = UserVM()
     @State var chatLoaded: Bool = false
-    @State var chatUpdated: Bool = false
     @State var chatParticipants: [UserData] = []
     @State var back: Bool = false
     @State var hideUsers: Bool = true
@@ -32,17 +31,7 @@ struct ChatView: View {
                 ProgressView()
             } else {
                 ZStack{
-                    MessageView(sender: $sender, chatManager: $chatManager).onChange(of: SocketService.shared.updateChatMessages, {
-                        if(SocketService.shared.updateChatMessages == chatManager.chat.identifier) {
-                            Task{
-                                
-                                await chatManager.fetchChat(byId: chatManager.chat.identifier)
-                                
-                            }
-                            SocketService.shared.updateChatMessages = 0
-                            print("messages up to date.")
-                        }
-                    })
+                    MessageView(sender: $sender, chatManager: $chatManager)
                     VStack{
                         HStack{
                             VStack{
@@ -113,11 +102,14 @@ struct ChatView: View {
                     chatLoaded = await chatManager.createNewChat()
                 }
                 for id in chatManager.chat.participants {
-                    try await userManager.fetchUser(byId: id)
-                    let user = userManager.user
-                    if !chatParticipants.contains(where: { $0 == user }) {
-                        chatParticipants.append(user)
+                    if(await userManager.fetchUser(byId: id))
+                    {
+                        let user = userManager.user
+                        if !chatParticipants.contains(where: { $0 == user }) {
+                            chatParticipants.append(user)
+                        }
                     }
+                    
                 }
 
             }

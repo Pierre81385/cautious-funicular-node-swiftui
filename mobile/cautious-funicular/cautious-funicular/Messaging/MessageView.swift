@@ -10,6 +10,7 @@ import SwiftUI
 struct MessageView: View {
     @Binding var sender: UserData
     @Binding var chatManager: ChatVM
+    @State var chatUpdating: Bool = false
     @State var messageText: String = ""
     @State var showImagePicker: Bool = false
     @State var imageManager: ImagePickerViewModel = ImagePickerViewModel()
@@ -18,19 +19,34 @@ struct MessageView: View {
     var body: some View {
         NavigationStack{
             VStack{
-                List(chatManager.chat.messages.reversed(), id: \._id) {
-                    message in
-                    if(message.sender == sender._id) {
-                        SenderMessage(message: message)
-                    } else {
-                        MessageFeed(message: message)
-                    }
-                }.ignoresSafeArea(edges: .top)
-                .onChange(of: chatManager.chat.messages, {
-                    messageText = ""
-                })
-                .rotationEffect(.radians(.pi))
-                    .scaleEffect(x: -1, y: 1, anchor: .center)
+                    List(chatManager.chat.messages.reversed(), id: \._id) {
+                        message in
+                        if(chatUpdating) {
+                            ProgressView()
+                        }
+                        if(message.sender == sender._id) {
+                            SenderMessage(message: message)
+                        } else {
+                            MessageFeed(message: message)
+                        }
+                    }.ignoresSafeArea(edges: .top)
+                        .onChange(of: chatManager.chat.messages, {
+                            messageText = ""
+                        })
+                        .onChange(of: SocketService.shared.updateChatMessages) { oldValue, newValue in
+                            chatUpdating = true
+                            if newValue == chatManager.chat.identifier {
+                                Task {
+                                    if(await chatManager.fetchChat(byId: newValue)) {
+                                        chatUpdating = false
+                                    }
+                                }
+                                SocketService.shared.updateChatMessages = 0
+                                print("messages up to date.")
+                            }
+                        }
+                        .rotationEffect(.radians(.pi))
+                        .scaleEffect(x: -1, y: 1, anchor: .center)
                 HStack{
                     Button(action: {
                         showImagePicker = true
