@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B1E7A42E2CAF15B500FB1C82 /* MessageBubbleComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E7A42D2CAF15B500FB1C82 /* MessageBubbleComponent.swift */; };
 		B1FE5C0C2C8AB71A005FA587 /* cautious_funicularApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C0B2C8AB71A005FA587 /* cautious_funicularApp.swift */; };
 		B1FE5C0E2C8AB71A005FA587 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C0D2C8AB71A005FA587 /* ContentView.swift */; };
 		B1FE5C102C8AB71A005FA587 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C0F2C8AB71A005FA587 /* Item.swift */; };
@@ -32,6 +33,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B1E7A42D2CAF15B500FB1C82 /* MessageBubbleComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBubbleComponent.swift; sourceTree = "<group>"; };
 		B1FE5C082C8AB71A005FA587 /* cautious-funicular.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "cautious-funicular.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1FE5C0B2C8AB71A005FA587 /* cautious_funicularApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cautious_funicularApp.swift; sourceTree = "<group>"; };
 		B1FE5C0D2C8AB71A005FA587 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 				B1FE5C2A2C9893EC005FA587 /* MessageModel.swift */,
 				B1FE5C382C9DE565005FA587 /* MessageViewModel.swift */,
 				B1FE5C362C9C9686005FA587 /* MessageView.swift */,
+				B1E7A42D2CAF15B500FB1C82 /* MessageBubbleComponent.swift */,
 			);
 			path = Messaging;
 			sourceTree = "<group>";
@@ -231,6 +234,7 @@
 				B1FE5C352C98A5D6005FA587 /* ChatViewModel.swift in Sources */,
 				B1FE5C452CA32A07005FA587 /* ImageView.swift in Sources */,
 				B1FE5C3E2CA130F3005FA587 /* LocationView.swift in Sources */,
+				B1E7A42E2CAF15B500FB1C82 /* MessageBubbleComponent.swift in Sources */,
 				B1FE5C282C8E3195005FA587 /* ProfileView.swift in Sources */,
 				B1FE5C3C2CA12DC7005FA587 /* LocationManager.swift in Sources */,
 				B1FE5C0E2C8AB71A005FA587 /* ContentView.swift in Sources */,

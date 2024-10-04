@@ -35,13 +35,21 @@ struct MessageView: View {
                     Button(action: {
                         showImagePicker = true
                     }, label: {
-                        Image(systemName: "photo.on.rectangle.fill").tint(.black)
+                        if(imageManager.isUploading) {
+                            ProgressView()
+                        } else {
+                            if(imageManager.imageIds.isEmpty) {
+                                Image(systemName: "photo.on.rectangle.fill").tint(.black)
+                            } else {
+                                Image(systemName: "photo.badge.checkmark.fill").tint(.black)
+                            }
+                        }
                     }).sheet(isPresented: $showImagePicker, content: {
-                        MediaPickerView(imagePickerVM: $imageManager)
+                        MediaPickerView(imagePickerVM: $imageManager, showImagePicker: $showImagePicker)
                     })
                     TextField("Say something...", text: $messageText)
                     Button(action: {
-                        let newMessage = MessageData(sender: sender._id!, textContent: messageText, mediaContent: [])
+                        let newMessage = MessageData(sender: sender._id!, textContent: messageText, mediaContent: imageManager.imageIds)
                         chatManager.chat.messages.append(newMessage)
                         Task{
                             await chatManager.updateChat(byId: chatManager.chat.identifier)

@@ -11,22 +11,11 @@ import PhotosUI
 
 struct MediaPickerView: View {
     @Binding var imagePickerVM: ImagePickerViewModel
-    //@State var imagePickerVM: ImagePickerViewModel = ImagePickerViewModel()
-    @State private var showImagePicker: Bool = true
+    @Binding var showImagePicker: Bool
 
     var body: some View {
         ScrollView(content: {
             VStack {
-                if(!showImagePicker) {
-                    Button(action: {
-                        imagePickerVM.selectedItems = []
-                        imagePickerVM.images = []
-                        showImagePicker = true
-                    }, label: {
-                        Text("Clear")
-                    })
-                }
-                
                 if (showImagePicker) {
                     Rectangle()
                                 .fill(Color.white)
@@ -50,15 +39,33 @@ struct MediaPickerView: View {
                                                 }
                                             
                                         }
-                                        .onChange(of: imagePickerVM.images) {
-                                            if !imagePickerVM.images.isEmpty {
-                                                showImagePicker = false
-                                            }
-                                        }
+//                                        .onChange(of: imagePickerVM.images) {
+//                                            if !imagePickerVM.images.isEmpty {
+//                                                showImagePicker = false
+//                                            }
+//                                        }
                                 )
                 }
 
                 if !imagePickerVM.images.isEmpty {
+                    HStack{
+                        Button(action: {
+                            imagePickerVM.selectedItems = []
+                            imagePickerVM.images = []
+                            showImagePicker = true
+                        }, label: {
+                            Text("Cancel")
+                        })
+                        Spacer()
+                        Button(action: {
+                            Task{
+                                await imagePickerVM.uploadMedia()
+                            }
+                            showImagePicker = false
+                        }, label: {
+                            Text("Upload")
+                        })
+                    }
                         ForEach(imagePickerVM.images, id: \.self) { image in
                             
                             Image(uiImage: image)
