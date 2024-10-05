@@ -14,15 +14,6 @@ struct MediaPickerView: View {
     @Binding var showImagePicker: Bool
 
     var body: some View {
-        ScrollView(content: {
-            VStack {
-                if (showImagePicker) {
-                    Rectangle()
-                                .fill(Color.white)
-                                .frame(width: 325, height: 325)
-                                .cornerRadius(20)
-                                .shadow(color: Color.black.opacity(0.2), radius: 10, x: 0, y: 5)
-                                .overlay(
                                     PhotosPicker(
                                         selection: $imagePickerVM.selectedItems,
                                         matching:  .any(of: [.images]),
@@ -39,48 +30,11 @@ struct MediaPickerView: View {
                                                 }
                                             
                                         }
-//                                        .onChange(of: imagePickerVM.images) {
-//                                            if !imagePickerVM.images.isEmpty {
-//                                                showImagePicker = false
-//                                            }
-//                                        }
-                                )
-                }
-
-                if !imagePickerVM.images.isEmpty {
-                    HStack{
-                        Button(action: {
-                            imagePickerVM.selectedItems = []
-                            imagePickerVM.images = []
-                            showImagePicker = true
-                        }, label: {
-                            Text("Cancel")
-                        })
-                        Spacer()
-                        Button(action: {
-                            Task{
-                                await imagePickerVM.uploadMedia()
-                            }
-                            showImagePicker = false
-                        }, label: {
-                            Text("Upload")
-                        })
-                    }
-                        ForEach(imagePickerVM.images, id: \.self) { image in
-                            
-                            Image(uiImage: image)
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(width: 320, height: 320)
-                                        .cornerRadius(20)
-                                        .clipped() // Ensures the image doesn't overflow outside the rounded corners
-                                        .shadow(color: Color.black.opacity(0.2), radius: 10, x: 0, y: 5)
-                        }
-                }
-            }
-            .padding()
-        })
-      
+                                        .onChange(of: imagePickerVM.images, { oldValue, newValue in
+                                                Task{
+                                                    await imagePickerVM.uploadMedia()
+                                                }
+                                        })
     }
 }
 

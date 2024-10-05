@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B1165AA02CB08BB80061C487 /* ImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1165A9F2CB08BB80061C487 /* ImageModel.swift */; };
 		B1E7A42E2CAF15B500FB1C82 /* MessageBubbleComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E7A42D2CAF15B500FB1C82 /* MessageBubbleComponent.swift */; };
 		B1FE5C0C2C8AB71A005FA587 /* cautious_funicularApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C0B2C8AB71A005FA587 /* cautious_funicularApp.swift */; };
 		B1FE5C0E2C8AB71A005FA587 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C0D2C8AB71A005FA587 /* ContentView.swift */; };
@@ -33,6 +34,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B1165A9F2CB08BB80061C487 /* ImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageModel.swift; sourceTree = "<group>"; };
 		B1E7A42D2CAF15B500FB1C82 /* MessageBubbleComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBubbleComponent.swift; sourceTree = "<group>"; };
 		B1FE5C082C8AB71A005FA587 /* cautious-funicular.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "cautious-funicular.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1FE5C0B2C8AB71A005FA587 /* cautious_funicularApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cautious_funicularApp.swift; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 			children = (
 				B1FE5C402CA328E4005FA587 /* ImageHelpers.swift */,
 				B1FE5C422CA32930005FA587 /* ImagePickerViewModel.swift */,
+				B1165A9F2CB08BB80061C487 /* ImageModel.swift */,
 				B1FE5C442CA32A07005FA587 /* ImageView.swift */,
 			);
 			path = Images;
@@ -244,6 +247,7 @@
 				B1FE5C372C9C9686005FA587 /* MessageView.swift in Sources */,
 				B1FE5C412CA328E4005FA587 /* ImageHelpers.swift in Sources */,
 				B1FE5C102C8AB71A005FA587 /* Item.swift in Sources */,
+				B1165AA02CB08BB80061C487 /* ImageModel.swift in Sources */,
 				B1FE5C1F2C8AB751005FA587 /* SocketIO.swift in Sources */,
 				B1FE5C432CA32930005FA587 /* ImagePickerViewModel.swift in Sources */,
 				B1FE5C222C8BC977005FA587 /* UserModel.swift in Sources */,

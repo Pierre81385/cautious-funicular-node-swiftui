@@ -19,50 +19,51 @@ struct MessageView: View {
     var body: some View {
         NavigationStack{
             VStack{
-                    List(chatManager.chat.messages.reversed(), id: \._id) {
-                        message in
-                        if(chatUpdating) {
-                            ProgressView()
-                        }
-                        if(message.sender == sender._id) {
-                            SenderMessage(message: message)
-                        } else {
-                            MessageFeed(message: message)
-                        }
-                    }.ignoresSafeArea(edges: .top)
-                        .onChange(of: chatManager.chat.messages, {
-                            messageText = ""
-                        })
-                        .onChange(of: SocketService.shared.updateChatMessages) { oldValue, newValue in
-                            chatUpdating = true
-                            if newValue == chatManager.chat.identifier {
-                                Task {
-                                    if(await chatManager.fetchChat(byId: newValue)) {
-                                        chatUpdating = false
-                                    }
-                                }
-                                SocketService.shared.updateChatMessages = 0
-                                print("messages up to date.")
-                            }
-                        }
-                        .rotationEffect(.radians(.pi))
-                        .scaleEffect(x: -1, y: 1, anchor: .center)
-                HStack{
-                    Button(action: {
-                        showImagePicker = true
-                    }, label: {
-                        if(imageManager.isUploading) {
-                            ProgressView()
-                        } else {
-                            if(imageManager.imageIds.isEmpty) {
-                                Image(systemName: "photo.on.rectangle.fill").tint(.black)
+                ScrollView {
+                    VStack {
+                        ForEach(chatManager.chat.messages.reversed(), id: \._id) { message in
+                            if chatUpdating {
+                                ProgressView()
                             } else {
-                                Image(systemName: "photo.badge.checkmark.fill").tint(.black)
+                                // Check the sender and display the corresponding view
+                                if message.sender == sender._id {
+                                    SenderMessage(message: message)
+                                        .background(Color(UIColor.systemGroupedBackground)) // Set the background color for the message
+                                        .cornerRadius(10)
+                                        .padding(.horizontal) // Add horizontal padding
+                                        .padding(.vertical, 5) // Add some space between messages
+                                } else {
+                                    MessageFeed(message: message)
+                                        .background(Color(UIColor.systemGroupedBackground)) // Set the background color for the message
+                                        .cornerRadius(10)
+                                        .padding(.horizontal)
+                                        .padding(.vertical, 5)
+                                }
                             }
                         }
-                    }).sheet(isPresented: $showImagePicker, content: {
-                        MediaPickerView(imagePickerVM: $imageManager, showImagePicker: $showImagePicker)
-                    })
+                    }
+                }
+                .background(Color(UIColor.systemGroupedBackground)) // Set the background color for the entire ScrollView
+                .ignoresSafeArea(edges: .top)
+                .onChange(of: chatManager.chat.messages) {
+                    messageText = ""
+                }
+                .onChange(of: SocketService.shared.updateChatMessages) { oldValue, newValue in
+                    chatUpdating = true
+                    if newValue == chatManager.chat.identifier {
+                        Task {
+                            if await chatManager.fetchChat(byId: newValue) {
+                                chatUpdating = false
+                            }
+                        }
+                        SocketService.shared.updateChatMessages = 0
+                        print("messages up to date.")
+                    }
+                }
+                .rotationEffect(.radians(.pi))
+                .scaleEffect(x: -1, y: 1, anchor: .center)
+                HStack{
+                    MediaPickerView(imagePickerVM: $imageManager, showImagePicker: $showImagePicker)
                     TextField("Say something...", text: $messageText)
                     Button(action: {
                         let newMessage = MessageData(sender: sender._id!, textContent: messageText, mediaContent: imageManager.imageIds)
@@ -73,7 +74,11 @@ struct MessageView: View {
 //                        messageText = ""
                         SocketService.shared.socket.emit("messageSent", ["identifier": chatManager.chat.identifier])
                     }, label: {
-                        Image(systemName: "paperplane.fill").foregroundStyle(.green)
+                        if(messageText.count < 1) {
+                            Image(systemName: "paperplane.fill").foregroundStyle(.black)
+                        } else {
+                            Image(systemName: "paperplane.fill").foregroundStyle(.green)
+                        }
                     })
                 }.padding()
             }
@@ -84,45 +89,131 @@ struct MessageView: View {
 struct MessageFeed: View {
     var message: MessageData
     @State var userManager: UserVM = UserVM()
+    @State var imageManager: ImagePickerViewModel = ImagePickerViewModel()
+    
+    // A Set to keep track of messages whose images have already been loaded
+    @State private var loadedMessages: Set<String> = []
 
     var body: some View {
+        VStack {
+            // Display images if any are available
+            if !imageManager.images.isEmpty {
+                // Use VStack to stack images vertically
+                ForEach(imageManager.images, id: \.self) { img in
+                    Image(uiImage: img)
+                        .resizable()
+                        .scaledToFill() // Fill the frame while maintaining aspect ratio
+                        .frame(width: 300) // Set a fixed height for each image
+                        .cornerRadius(20) // Apply corner radius for rounded corners
+                        .clipped() // Clip any overflowing parts
+                        .rotationEffect(.degrees(180)) // Rotate the image 180 degrees
+                        .shadow(color: Color.black.opacity(0.2), radius: 10, x: 0, y: 5)
+                        .padding(.bottom, 10) // Add some spacing between images
+                }
+                .padding()
+            }
+
+            // Text content of the message
             HStack {
-                VStack.init(alignment: .leading) {
+                VStack(alignment: .leading) {
                     Text(userManager.user.username).font(.headline)
                     Text(message.textContent)
-                }.rotationEffect(.radians(.pi))
-                    .scaleEffect(x: -1, y: 1, anchor: .center)
+                }
+                .rotationEffect(.radians(.pi))
+                .scaleEffect(x: -1, y: 1, anchor: .center)
                 Spacer()
-            }.onAppear{
-                Task{
+            }
+            .onAppear {
+                Task {
                     await userManager.fetchUser(byId: message.sender)
+                }
+                
+                // Check if images for this message have already been loaded
+                if !loadedMessages.contains(message._id) {
+                    // Load images for new messages
+                    if !message.mediaContent.isEmpty {
+                        for id in message.mediaContent {
+                            Task {
+                                await imageManager.downloadMedia(byId: id)
+                            }
+                        }
+                        // Mark this message as loaded
+                        loadedMessages.insert(message._id)
+                    }
                 }
             }
         }
+        .padding() // Add padding to the entire VStack
+        .background(Color(UIColor.systemGroupedBackground)) // Match List background color
+        .cornerRadius(10) // Optional: Add corner radius for the entire message
+        //.shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2) // Optional: Add a subtle shadow
+    }
 }
 
 struct SenderMessage: View {
     var message: MessageData
     @State var userManager: UserVM = UserVM()
+    @State var imageManager: ImagePickerViewModel = ImagePickerViewModel()
+    
+    // A Set to keep track of messages whose images have already been loaded
+    @State private var loadedMessages: Set<String> = []
 
     var body: some View {
-        HStack {
-            Spacer()
-            VStack.init(alignment: .trailing) {
-                Text(userManager.user.username).font(.headline)
-                Text(message.textContent)
+        VStack {
+            // Display images if any are available
+            if !imageManager.images.isEmpty {
+                // Use VStack to stack images vertically
+                ForEach(imageManager.images, id: \.self) { img in
+                    Image(uiImage: img)
+                        .resizable()
+                        .scaledToFill() // Fill the frame while maintaining aspect ratio
+                        .frame(width: 300) // Set a fixed width for each image
+                        .cornerRadius(20) // Apply corner radius for rounded corners
+                        .clipped() // Clip any overflowing parts
+                        .rotationEffect(.degrees(180)) // Rotate the image 180 degrees
+                        .shadow(color: Color.black.opacity(0.2), radius: 10, x: 0, y: 5)
+                        .padding(.bottom, 10) // Add some spacing between images
+                }
+                .padding()
             }
-            .rotationEffect(.radians(.pi))
-            .scaleEffect(x: -1, y: 1, anchor: .center)
-        }.onAppear{
-            //get sender information
-            Task{
-                await userManager.fetchUser(byId: message.sender)
+
+            // Text content of the message
+            HStack {
+                Spacer()
+                VStack(alignment: .trailing) {
+                    Text(userManager.user.username).font(.headline)
+                    Text(message.textContent)
+                }
+                .rotationEffect(.radians(.pi))
+                .scaleEffect(x: -1, y: 1, anchor: .center)
+            }
+            .onAppear {
+                // Fetch sender information
+                Task {
+                    await userManager.fetchUser(byId: message.sender)
+                }
+                
+                // Check if images for this message have already been loaded
+                if !loadedMessages.contains(message._id) {
+                    // Load images for new messages
+                    if !message.mediaContent.isEmpty {
+                        for id in message.mediaContent {
+                            Task {
+                                await imageManager.downloadMedia(byId: id)
+                            }
+                        }
+                        // Mark this message as loaded
+                        loadedMessages.insert(message._id)
+                    }
+                }
             }
         }
+        .padding() // Add padding to the entire VStack
+        .background(Color(UIColor.systemGroupedBackground)) // Match List background color
+        .cornerRadius(10) // Optional: Add corner radius for the entire message
+        //.shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2) // Optional: Add a subtle shadow
     }
 }
-
 
 //#Preview {
 //    MessageView()

@@ -15,6 +15,9 @@ import _PhotosUI_SwiftUI
     var images: [UIImage] = []
     var imageIds: [String] = []
     var isUploading: Bool = false
+    var isDownloading: Bool = false
+    var baseURL: String = "http://localhost:3000/imgs"
+    var error: String = ""
     
     func loadMedia(from items: [PhotosPickerItem]) async {
         for item in items {
@@ -26,13 +29,49 @@ import _PhotosUI_SwiftUI
         }
     }
     
+    func downloadMedia(byId imageId: String) async -> Bool {
+        isDownloading = true
+        images = []
+        defer { isDownloading = false }
+        
+        guard let url = URL(string: "\(baseURL)/\(imageId)") else { return false }
+
+        do {
+            let (data, response) = try await URLSession.shared.data(from: url)
+
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                // Decode the entire ImageData object
+                let decodedImageData = try JSONDecoder().decode(ImageData.self, from: data)
+                
+                // Convert the decoded image data to UIImage and append it to the images array
+                if let uiImage = UIImage(data: decodedImageData.img.data) {
+                    self.images.append(uiImage)
+                    print("Image found!")
+                    return true
+                } else {
+                    self.error = "Error: Unable to convert data to UIImage."
+                    print(error)
+                    return false
+                }
+            } else {
+                self.error = "Error: No image found by id \(imageId)"
+                print(error)
+                return false
+            }
+        } catch {
+            self.error = "Error fetching image: \(error.localizedDescription)"
+            print(error)
+            return false
+        }
+    }
+    
     func uploadMedia() async {
         isUploading = true
         defer { isUploading = false } // Reset the uploading state when done
 
         for image in images {
             // Convert UIImage to Data
-            guard let imageData = image.jpegData(compressionQuality: 1.0) else {
+            guard let imageData = image.jpegData(compressionQuality: 0.2) else {
                 print("Error: Could not convert UIImage to Data")
                 continue
             }
