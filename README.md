@@ -8,6 +8,24 @@ Node/Express server hosts the API allowing the apps conneting to it to perform C
 
 For events that require realtime updates like new user creation, user deletion, message creation, or online/offline status, websocket events trigger updates to fetch new data and re-render.
 
+As a user I can create an account with a username, email and password combination.
+- Need to add JWT authentication to lockdown the endpoints to authorized users only.  
+- Need to add Avatar image uploading and save the avatar image id to the User object. 
+- Need to add an array to store images uploaded by a specific user so they can view all of the images and delete ones they don't want seen anymore.  
+- Need to add the user location general (city or address) and current exact with websocket updates
+
+As a user when I login I am taken to a page showing me my profile details and users to chat with.  
+- I can toggle my online / offline status and this updates for other users in realtime
+- I can chat with users who are online by tapping their name
+
+As a user I can chat with other users.  
+- I can send text message or text with images selected from my gallery
+- Need to add location sharing 
+- Need to add the ability to share videos 
+- Need to add the ability to update the chat as a group chat
+- Need to be able to make chats private
+- Need to add chat sharing through QR code
+
 # Websockets
 
 [User Online Status]
@@ -59,5 +77,7 @@ PUT "Update chat by chat identifier" http://localhost:3000/chats/{chat.identifie
 ## - Image Endpoint
 
 POST "Upload Image" http://localhost:3000/imgs/upload
+
+GET "Get Image" http://localhost:3000/imgs/:id 
 
 

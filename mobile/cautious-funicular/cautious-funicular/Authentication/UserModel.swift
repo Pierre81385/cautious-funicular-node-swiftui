@@ -14,6 +14,8 @@ struct UserData: Codable, Equatable {
     var username: String
     var email: String
     var password: String
+    var avatar: String
+    var uploads: [String]
     var dateCreated: Date?
     var dateUpdated: Date?
 
@@ -24,6 +26,8 @@ struct UserData: Codable, Equatable {
         case username
         case email
         case password
+        case avatar
+        case uploads
         case dateCreated
         case dateUpdated
     }
@@ -37,6 +41,8 @@ struct UserData: Codable, Equatable {
         username = try container.decode(String.self, forKey: .username)
         email = try container.decode(String.self, forKey: .email)
         password = try container.decode(String.self, forKey: .password)
+        avatar = try container.decode(String.self, forKey: .avatar)
+        uploads = try container.decode([String].self, forKey: .uploads)
         
         // Try decoding dateCreated and dateUpdated as Unix timestamps
         if let dateCreatedTimestamp = try container.decodeIfPresent(Double.self, forKey: .dateCreated) {
@@ -56,6 +62,8 @@ struct UserData: Codable, Equatable {
         try container.encode(username, forKey: .username)
         try container.encode(email, forKey: .email)
         try container.encode(password, forKey: .password)
+        try container.encode(avatar, forKey: .avatar)
+        try container.encode(uploads, forKey: .uploads)
         
         // Encode dates as Unix timestamps (seconds since 1970)
         if let dateCreated = dateCreated {
@@ -67,13 +75,15 @@ struct UserData: Codable, Equatable {
     }
     
     // Init method with default values
-    init(_id: String = "", identifier: Double = 0, online: Bool = false, username: String = "", email: String = "", password: String = "", dateCreated: Date? = nil, dateUpdated: Date? = nil) {
+    init(_id: String = "", identifier: Double = 0, online: Bool = false, username: String = "", email: String = "", password: String = "", avatar: String = "", uploads: [String] = [], dateCreated: Date? = nil, dateUpdated: Date? = nil) {
         self._id = _id
         self.identifier = identifier
         self.online = online
         self.username = username
         self.email = email
         self.password = password
+        self.avatar = avatar
+        self.uploads = uploads
         self.dateCreated = dateCreated
         self.dateUpdated = dateUpdated
     }

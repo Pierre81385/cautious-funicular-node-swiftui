@@ -14,6 +14,7 @@ struct MessageView: View {
     @State var messageText: String = ""
     @State var showImagePicker: Bool = false
     @State var imageManager: ImagePickerViewModel = ImagePickerViewModel()
+    @State var userManager: UserVM = UserVM()
     
 
     var body: some View {
@@ -78,6 +79,9 @@ struct MessageView: View {
 
                                 // Emit the messageSent event after everything is updated
                                 SocketService.shared.socket.emit("messageSent", ["identifier": chatManager.chat.identifier])
+                            
+                                sender.uploads.append(contentsOf: imageManager.imageIds)
+                                await userManager.updateUser(userUpdate: sender)
 
                                 // Optionally, clear the text field after sending
                                 // messageText = ""

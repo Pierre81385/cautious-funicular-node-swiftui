@@ -16,6 +16,7 @@ import CryptoKit
     var error: String = ""
     
     func createNewUser() async -> Bool {
+            print("Creating a new user.")
             guard let url = URL(string: "\(baseURL)/new") else { return false }
 
             // Create the request
@@ -29,7 +30,9 @@ import CryptoKit
                 "online": user.online,
                 "username": user.username,
                 "email": user.email,
-                "password": user.password
+                "password": user.password,
+                "avatar": user.avatar,
+                "uploads": user.uploads
             ]
 
             // Convert body to JSON data
@@ -43,13 +46,16 @@ import CryptoKit
 
                 // Ensure we received an HTTP 200 response
                 if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                    print("New user successfully added to MongoDB.")
                     return true
                 } else {
                     self.error = "Error: \(response)"
+                    print(self.error)
                     return false
                 }
             } catch {
                 self.error = "Error submitting data: \(error.localizedDescription)"
+                print(self.error)
                 return false
 
             }
@@ -78,26 +84,32 @@ import CryptoKit
     }
     
     func authenticateUser() async -> Bool {
-        
+        print("Attempting to authenticate a user.")
         //a very basic authentication
         
         guard let url = URL(string: "\(baseURL)/user/\(user.username)") else { return false }
+        print("Sending request to \(url)")
 
         do {
             let (data, response) = try await URLSession.shared.data(from: url)
+            print(response)
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                print(httpResponse)
                 let decodedUser = try JSONDecoder().decode(UserData.self, from: data)
                 if (user.password == decodedUser.password) {
                     self.user = decodedUser
+                    print("User authenticated by password match!")
                     return true
                 }
                 
             } else {
                 self.error = "Error: Invalid cridentials"
+                print(self.error)
                 return false
             }
         } catch {
             self.error = "Error fetching user: \(error.localizedDescription)"
+            print(self.error)
             return false
         }
         

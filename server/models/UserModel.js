@@ -32,6 +32,14 @@ const userSchema = new Schema(
       required: [true, "Your password is required"],
       minlength: 5, // Minimum password length
     },
+    avatar: {
+      type: String,
+      required: false
+    },
+    uploads: {
+      type: [String], // Array of user IDs (or names/emails)
+      required: true
+    },
   },
   { timestamps: true } // Adds createdAt and updatedAt timestamps automatically
 );
