@@ -10,7 +10,7 @@ import SwiftUI
 import PhotosUI
 
 struct MediaPickerView: View {
-    @Binding var imagePickerVM: ImagePickerViewModel
+    @Binding var imagePickerVM: ImagePickerVM
 
     var body: some View {
                                     PhotosPicker(
@@ -33,6 +33,4 @@ struct MediaPickerView: View {
     }
 }
 
-//#Preview {
-//    MediaPickerView()
-//}
+

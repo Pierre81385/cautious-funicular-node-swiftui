@@ -172,6 +172,7 @@ import CryptoKit
 
     
     func updateUser(userUpdate: UserData) async -> Bool {
+        print("Updating user!")
         guard let url = URL(string: "\(baseURL)/\(userUpdate._id ?? "NoUser")") else { return false }
 
         var request = URLRequest(url: url)
@@ -182,7 +183,9 @@ import CryptoKit
             "online": userUpdate.online,
             "username": userUpdate.username,
             "email": userUpdate.email,
-            "password": userUpdate.password
+            "password": userUpdate.password,
+            "avatar": userUpdate.avatar,
+            "uploads": userUpdate.uploads
         ]
 
         guard let jsonData = try? JSONSerialization.data(withJSONObject: body, options: []) else { return false }

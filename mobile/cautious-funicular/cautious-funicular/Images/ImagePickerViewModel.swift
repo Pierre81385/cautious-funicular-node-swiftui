@@ -10,7 +10,7 @@ import Observation
 import PhotosUI
 import _PhotosUI_SwiftUI
 
-@Observable class ImagePickerViewModel {
+@Observable class ImagePickerVM {
     var selectedItems: [PhotosPickerItem] = []
     var images: [UIImage] = []
     var imageIds: [String] = []

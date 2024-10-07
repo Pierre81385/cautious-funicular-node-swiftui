@@ -13,7 +13,7 @@ struct MessageView: View {
     @State var chatUpdating: Bool = false
     @State var messageText: String = ""
     @State var showImagePicker: Bool = false
-    @State var imageManager: ImagePickerViewModel = ImagePickerViewModel()
+    @State var imagePickerManager: ImagePickerVM = ImagePickerVM()
     @State var userManager: UserVM = UserVM()
     
 
@@ -64,30 +64,30 @@ struct MessageView: View {
                 .rotationEffect(.radians(.pi))
                 .scaleEffect(x: -1, y: 1, anchor: .center)
                 HStack{
-                    MediaPickerView(imagePickerVM: $imageManager)
+                    MediaPickerView(imagePickerVM: $imagePickerManager)
                     TextField("Say something...", text: $messageText)
                     Button(action: {
                         Task {
                                 // Ensure that the media upload completes first
-                                await imageManager.uploadMedia()
-
+                                await imagePickerManager.uploadMedia()
+                            
                                 // Once the upload completes, create and send the message
-                                let newMessage = MessageData(sender: sender._id!, textContent: messageText, mediaContent: imageManager.imageIds)
+                                let newMessage = MessageData(sender: sender._id!, textContent: messageText, mediaContent: imagePickerManager.imageIds)
                                 chatManager.chat.messages.append(newMessage)
                                 
                                 await chatManager.updateChat(byId: chatManager.chat.identifier)
+                            
+                            sender.uploads.append(contentsOf: imagePickerManager.imageIds)
+                            await userManager.updateUser(userUpdate: sender)
 
                                 // Emit the messageSent event after everything is updated
                                 SocketService.shared.socket.emit("messageSent", ["identifier": chatManager.chat.identifier])
-                            
-                                sender.uploads.append(contentsOf: imageManager.imageIds)
-                                await userManager.updateUser(userUpdate: sender)
-
+    
                                 // Optionally, clear the text field after sending
                                 // messageText = ""
-                            imageManager.selectedItems = []
-                            imageManager.images = []
-                            imageManager.imageIds = []
+                            imagePickerManager.selectedItems = []
+                            imagePickerManager.images = []
+                            imagePickerManager.imageIds = []
                             }
                     }, label: {
                         if(messageText.count < 1) {
@@ -105,7 +105,7 @@ struct MessageView: View {
 struct MessageFeed: View {
     var message: MessageData
     @State var userManager: UserVM = UserVM()
-    @State var imageManager: ImagePickerViewModel = ImagePickerViewModel()
+    @State var imagePickerManager: ImagePickerVM = ImagePickerVM()
     
     // A Set to keep track of messages whose images have already been loaded
     @State private var loadedMessages: Set<String> = []
@@ -113,9 +113,9 @@ struct MessageFeed: View {
     var body: some View {
         VStack {
             // Display images if any are available
-            if !imageManager.images.isEmpty {
+            if !imagePickerManager.images.isEmpty {
                 // Use VStack to stack images vertically
-                ForEach(imageManager.images, id: \.self) { img in
+                ForEach(imagePickerManager.images, id: \.self) { img in
                     Image(uiImage: img)
                         .resizable()
                         .scaledToFill() // Fill the frame while maintaining aspect ratio
@@ -150,7 +150,7 @@ struct MessageFeed: View {
                     if !message.mediaContent.isEmpty {
                         for id in message.mediaContent {
                             Task {
-                                await imageManager.downloadMedia(byId: id)
+                                await imagePickerManager.downloadMedia(byId: id)
                             }
                         }
                         // Mark this message as loaded
@@ -169,7 +169,7 @@ struct MessageFeed: View {
 struct SenderMessage: View {
     var message: MessageData
     @State var userManager: UserVM = UserVM()
-    @State var imageManager: ImagePickerViewModel = ImagePickerViewModel()
+    @State var imagePickerManager: ImagePickerVM = ImagePickerVM()
     
     // A Set to keep track of messages whose images have already been loaded
     @State private var loadedMessages: Set<String> = []
@@ -177,9 +177,9 @@ struct SenderMessage: View {
     var body: some View {
         VStack {
             // Display images if any are available
-            if !imageManager.images.isEmpty {
+            if !imagePickerManager.images.isEmpty {
                 // Use VStack to stack images vertically
-                ForEach(imageManager.images, id: \.self) { img in
+                ForEach(imagePickerManager.images, id: \.self) { img in
                     Image(uiImage: img)
                         .resizable()
                         .scaledToFill() // Fill the frame while maintaining aspect ratio
@@ -215,7 +215,7 @@ struct SenderMessage: View {
                     if !message.mediaContent.isEmpty {
                         for id in message.mediaContent {
                             Task {
-                                await imageManager.downloadMedia(byId: id)
+                                await imagePickerManager.downloadMedia(byId: id)
                             }
                         }
                         // Mark this message as loaded
@@ -223,6 +223,8 @@ struct SenderMessage: View {
                     }
                 }
             }
+               
+            
         }
         .padding() // Add padding to the entire VStack
         .background(Color(UIColor.systemGroupedBackground)) // Match List background color

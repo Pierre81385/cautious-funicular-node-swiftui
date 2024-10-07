@@ -56,6 +56,8 @@ router.route("/:id").put(async (req, res) => {
           username: req.body.username,
           email: req.body.email,
           password: req.body.password,
+          avatar: req.body.avatar,
+          uploads: req.body.uploads
         },
       },
       {
