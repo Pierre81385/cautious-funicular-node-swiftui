@@ -11,30 +11,25 @@ import PhotosUI
 
 struct MediaPickerView: View {
     @Binding var imagePickerVM: ImagePickerViewModel
-    @Binding var showImagePicker: Bool
 
     var body: some View {
                                     PhotosPicker(
                                         selection: $imagePickerVM.selectedItems,
                                         matching:  .any(of: [.images]),
                                         photoLibrary: .shared()) {
-                                            Image(systemName: "person.crop.circle.badge.plus").resizable()
+                                            Image(systemName: "person.crop.circle.badge.plus")
                                                 .fontWeight(.ultraLight)
                                                 .foregroundStyle(.black)
-                                                .frame(width: 60, height: 50)
+                                                //.frame(width: 60, height: 50)
+                                        }.onAppear{
+                                            imagePickerVM.selectedItems = []
                                         }
                                         .onChange(of: imagePickerVM.selectedItems) { oldItems, newItems in
-
                                             Task {
                                                     await imagePickerVM.loadMedia(from: newItems)
                                                 }
                                             
                                         }
-                                        .onChange(of: imagePickerVM.images, { oldValue, newValue in
-                                                Task{
-                                                    await imagePickerVM.uploadMedia()
-                                                }
-                                        })
     }
 }
 

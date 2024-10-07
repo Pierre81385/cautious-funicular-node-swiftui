@@ -63,16 +63,28 @@ struct MessageView: View {
                 .rotationEffect(.radians(.pi))
                 .scaleEffect(x: -1, y: 1, anchor: .center)
                 HStack{
-                    MediaPickerView(imagePickerVM: $imageManager, showImagePicker: $showImagePicker)
+                    MediaPickerView(imagePickerVM: $imageManager)
                     TextField("Say something...", text: $messageText)
                     Button(action: {
-                        let newMessage = MessageData(sender: sender._id!, textContent: messageText, mediaContent: imageManager.imageIds)
-                        chatManager.chat.messages.append(newMessage)
-                        Task{
-                            await chatManager.updateChat(byId: chatManager.chat.identifier)
-                        }
-//                        messageText = ""
-                        SocketService.shared.socket.emit("messageSent", ["identifier": chatManager.chat.identifier])
+                        Task {
+                                // Ensure that the media upload completes first
+                                await imageManager.uploadMedia()
+
+                                // Once the upload completes, create and send the message
+                                let newMessage = MessageData(sender: sender._id!, textContent: messageText, mediaContent: imageManager.imageIds)
+                                chatManager.chat.messages.append(newMessage)
+                                
+                                await chatManager.updateChat(byId: chatManager.chat.identifier)
+
+                                // Emit the messageSent event after everything is updated
+                                SocketService.shared.socket.emit("messageSent", ["identifier": chatManager.chat.identifier])
+
+                                // Optionally, clear the text field after sending
+                                // messageText = ""
+                            imageManager.selectedItems = []
+                            imageManager.images = []
+                            imageManager.imageIds = []
+                            }
                     }, label: {
                         if(messageText.count < 1) {
                             Image(systemName: "paperplane.fill").foregroundStyle(.black)

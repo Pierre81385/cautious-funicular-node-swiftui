@@ -20,6 +20,7 @@ import _PhotosUI_SwiftUI
     var error: String = ""
     
     func loadMedia(from items: [PhotosPickerItem]) async {
+        images = []
         for item in items {
             // Load the media as either Data (images)
             if let imageData = try? await item.loadTransferable(type: Data.self),
