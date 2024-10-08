@@ -125,31 +125,32 @@ struct ProfileView: View {
                     ScrollView {
                         ForEach(userManager.users, id: \._id) { user in
                             if user._id != (userManager.user._id ?? "") {
-                                HStack {
-                                    if user.online {
-                                        HStack{
-                                            Image(systemName: "wifi").foregroundColor(.green)
-                                            Text(user.username)
-                                        }
-                                    } else {
-                                        HStack{
-                                            Image(systemName: "wifi.slash").foregroundColor(.gray)
-                                            Text(user.username)
-                                        }
-                                    }
-                                    Spacer()
-                                    if(user.online) {
-                                        Button(action: {
-                                            startChat = true
-                                        }, label: {
-                                            Image(systemName: "chevron.forward").foregroundColor(.black)
-                                        })
-                                        .navigationDestination(isPresented: $startChat) {
-                                            ChatView(sender: $userManager.user, to: user).navigationBarBackButtonHidden(true)
-                                        }
-                                    }
-                                }
-                                .padding()
+                                UserListItem(currentUser: $userManager.user, thisUser: user)
+//                                HStack {
+//                                    if user.online {
+//                                        HStack{
+//                                            Image(systemName: "wifi").foregroundColor(.green)
+//                                            Text(user.username)
+//                                        }
+//                                    } else {
+//                                        HStack{
+//                                            Image(systemName: "wifi.slash").foregroundColor(.gray)
+//                                            Text(user.username)
+//                                        }
+//                                    }
+//                                    Spacer()
+//                                    if(user.online) {
+//                                        Button(action: {
+//                                            startChat = true
+//                                        }, label: {
+//                                            Image(systemName: "chevron.forward").foregroundColor(.black)
+//                                        })
+//                                        .navigationDestination(isPresented: $startChat) {
+//                                            ChatView(sender: $userManager.user, to: user).navigationBarBackButtonHidden(true)
+//                                        }
+//                                    }
+//                                }
+//                                .padding()
                             }
                         }
                     }
@@ -180,7 +181,7 @@ struct ProfileView: View {
                         SocketService.shared.socket.emit("userOnline")
                     }
                     if await imagePickerManager.downloadMedia(byId: userManager.user.avatar) {
-                        
+                        //???
                     }
                     foundAllUsers = await userManager.fetchAllUsers()
                 }

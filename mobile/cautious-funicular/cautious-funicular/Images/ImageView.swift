@@ -18,11 +18,11 @@ struct MediaPickerView: View {
                                         selection: $imagePickerVM.selectedItems,
                                         matching:  .any(of: [.images]),
                                         photoLibrary: .shared()) {
-                                            Image(systemName: "person.crop.circle.badge.plus")
+                                            Image(systemName: "paperclip.circle")
                                                 .resizable()
                                                 .fontWeight(.ultraLight)
                                                 .foregroundStyle(.black)
-                                                .frame(width: 120, height: 100)
+                                                .frame(width: 40, height: 40)
                                         }.onAppear{
                                             imagePickerVM.selectedItems = []
                                         }
