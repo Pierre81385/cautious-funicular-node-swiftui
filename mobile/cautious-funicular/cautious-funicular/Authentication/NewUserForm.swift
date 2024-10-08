@@ -1,0 +1,74 @@
+//
+//  NewUserForm.swift
+//  cautious-funicular
+//
+//  Created by m1_air on 10/8/24.
+//
+
+import SwiftUI
+
+struct NewUserForm: View {
+    @State var userManager: UserVM = UserVM()
+    @State var imagePickerManager: ImagePickerVM = ImagePickerVM()
+    @State var verifyPassword: String = ""
+    @Binding var showLogin: Bool
+    
+    var body: some View {
+        VStack{
+            if let preview = imagePickerManager.images.first {
+                Image(uiImage: preview)
+                    .resizable()
+                    .scaledToFill() // Fill the frame while maintaining aspect ratio
+                    .frame(width: 200, height: 200) // Set a fixed size for the circle
+                    .clipShape(Circle()) // Make the image circular
+                    .clipped() // Clip any overflowing parts
+                    .shadow(color: Color.black.opacity(0.2), radius: 10, x: 0, y: 5)
+                    .padding() // Add some spacing
+                    .onTapGesture {
+                        imagePickerManager.images = []
+                        imagePickerManager.imageIds = []
+                    }
+            } else {
+                MediaPickerView(imagePickerVM: $imagePickerManager, maxSelection: 1).padding()
+            }
+            HStack{
+                VStack{
+                    Divider()
+                }
+                Text("REGISTER").fontWeight(.ultraLight).font(.system(size: 26))
+                VStack{
+                    Divider()
+                }
+            }
+            HStack{
+                Text("Already have an account?")
+                Button("Login", action: {
+                    showLogin = true
+                })
+            }
+            TextField("Email", text: $userManager.user.email).autocorrectionDisabled(true).textInputAutocapitalization(TextInputAutocapitalization.never).padding()
+            TextField("Username", text: $userManager.user.username).padding()
+            SecureField("Password", text: $userManager.user.password).padding()
+            SecureField("Verify Password", text: $verifyPassword).padding()
+            Button("Submit & Test Login", action: {
+               
+                    if(userManager.user.email.isEmpty || userManager.user.username.isEmpty || userManager.user.password.isEmpty) {
+                        print("Alert: Please complete the form!")
+                    } else {
+                        Task{
+                           await imagePickerManager.uploadMedia()
+                            
+                            userManager.user.avatar = imagePickerManager.imageIds[0]
+                            
+                            showLogin = await userManager.createNewUser()
+                        }
+                    }
+                
+            }).tint(.black).padding()
+        }
+    }
+}
+
+//#Preview {
+//    NewUserForm()
+//}

@@ -13,25 +13,12 @@ struct UserView: View {
     @State var new: Bool = false
     @State var success: Bool = false
     @State var message: [String] = ["Hello, World"]
+    @State var showLogin: Bool = true
     
     var body: some View {
         NavigationStack{
-            VStack{
-                Spacer()
-                if(new) {
-                    
-                    HStack{
-                        VStack{
-                            Divider()
-                        }
-                        Text("REGISTER").fontWeight(.ultraLight).font(.system(size: 26))
-                        VStack{
-                            Divider()
-                        }
-                    }      
-                    Toggle("New account", isOn: $new).tint(.black).padding()
-                    TextField("Email", text: $userManager.user.email).autocorrectionDisabled(true).textInputAutocapitalization(TextInputAutocapitalization.never).padding()
-                } else {
+            if(showLogin){
+                VStack{
                     VStack{
                         HStack{
                             VStack{
@@ -42,42 +29,35 @@ struct UserView: View {
                                 Divider()
                             }
                         }
-                        Toggle("New account", isOn: $new).tint(.black).padding()
-
-                    }
-                }
-                TextField("Username", text: $userManager.user.username).padding()
-                SecureField("Password", text: $userManager.user.password).padding()
-                if(new) {
-                    SecureField("Verify Password", text: $verifyPassword).padding()
-                }
-                Button("Submit", action: {
-                    if(new) {
-                        if(userManager.user.email.isEmpty || userManager.user.username.isEmpty || userManager.user.password.isEmpty) {
-                            print("Show Alert")
-                        } else {
-                            Task{
-                               success = await userManager.createNewUser()
-                            }
+                        HStack{
+                            Text("Don't have an account?")
+                            Button("Register", action: {
+                                showLogin = false
+                            })
                         }
-                    } else {
+                    }
+                    TextField("Username", text: $userManager.user.username).padding()
+                    SecureField("Password", text: $userManager.user.password).padding()
+                    if(new) {
+                        SecureField("Verify Password", text: $verifyPassword).padding()
+                    }
+                    Button("Submit", action: {
+                        
                         Task{
                             success = await userManager.authenticateUser()
                         }
-                    }
-                }).tint(.black).padding()
-                    .onChange(of: userManager.error, {
-                        message.append(userManager.error)
-                    })
-                    .navigationDestination(isPresented: $success, destination: {
-                        ProfileView(currentUser: userManager.user).navigationBarBackButtonHidden(true)
-                    })
-    
-            }.onChange(of: SocketService.shared.message, {
-                message.append(SocketService.shared.message)
-            })
-            .onAppear{
-                SocketService.shared.socket.disconnect()
+                        
+                    }).tint(.black).padding()
+                        .navigationDestination(isPresented: $success, destination: {
+                            ProfileView(currentUser: userManager.user).navigationBarBackButtonHidden(true)
+                        })
+                    
+                }
+                .onAppear{
+                    SocketService.shared.socket.disconnect()
+                }
+            } else {
+                NewUserForm(showLogin: $showLogin)
             }
         }
     }

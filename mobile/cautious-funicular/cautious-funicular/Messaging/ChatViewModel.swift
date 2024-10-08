@@ -146,8 +146,3 @@ import Observation
     }
 }
 
-//self.identifier = identifier
-//self.participants = participants
-//self.messages = messages
-//self.isPrivate = isPrivate
-//self.accessCode = accessCode

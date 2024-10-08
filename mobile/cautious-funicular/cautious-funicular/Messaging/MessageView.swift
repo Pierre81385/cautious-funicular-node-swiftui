@@ -64,7 +64,7 @@ struct MessageView: View {
                 .rotationEffect(.radians(.pi))
                 .scaleEffect(x: -1, y: 1, anchor: .center)
                 HStack{
-                    MediaPickerView(imagePickerVM: $imagePickerManager)
+                    MediaPickerView(imagePickerVM: $imagePickerManager, maxSelection: 5)
                     TextField("Say something...", text: $messageText)
                     Button(action: {
                         Task {
@@ -232,6 +232,7 @@ struct SenderMessage: View {
         //.shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2) // Optional: Add a subtle shadow
     }
 }
+
 
 //#Preview {
 //    MessageView()

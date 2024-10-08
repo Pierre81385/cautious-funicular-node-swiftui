@@ -3,6 +3,7 @@ import SwiftUI
 struct ProfileView: View {
     var currentUser: UserData?
     @State var userManager: UserVM = UserVM()
+    @State var imagePickerManager: ImagePickerVM = ImagePickerVM()
     @State var userOnline: Bool = false
     @State var foundUser: Bool = false
     @State var foundAllUsers: Bool = false
@@ -13,6 +14,7 @@ struct ProfileView: View {
     @State var updatingUsers: Bool = false
     @State var showGroupMessage: Bool = false
     @State var selectedGroup: Bool = false
+    @State var userAvatar: UIImage?
 
     var body: some View {
         NavigationStack {
@@ -36,7 +38,16 @@ struct ProfileView: View {
                         ProgressView().padding()
                     }
                 }
-                
+                if let avatar = imagePickerManager.images.first {
+                    Image(uiImage: avatar)
+                        .resizable()
+                        .scaledToFill() // Fill the frame while maintaining aspect ratio
+                        .frame(width: 200, height: 200) // Set a fixed size for the circle
+                        .clipShape(Circle()) // Make the image circular
+                        .clipped() // Clip any overflowing parts
+                        .shadow(color: Color.black.opacity(0.2), radius: 10, x: 0, y: 5)
+                        .padding() // Add some spacing
+                }
                 HStack {
                     VStack {
                         Divider()
@@ -119,20 +130,13 @@ struct ProfileView: View {
                                         HStack{
                                             Image(systemName: "wifi").foregroundColor(.green)
                                             Text(user.username)
-//                                            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-//                                                Image(systemName: "location.fill")
-//                                            }).padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5))
                                         }
                                     } else {
                                         HStack{
                                             Image(systemName: "wifi.slash").foregroundColor(.gray)
                                             Text(user.username)
-//                                            Image(systemName: "location.slash.fill").foregroundColor(.gray).padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5))
                                         }
                                     }
-//                                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-//                                        Image(systemName: "photo.stack.fill").foregroundColor(.teal)
-//                                    }).padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5))
                                     Spacer()
                                     if(user.online) {
                                         Button(action: {
@@ -174,6 +178,9 @@ struct ProfileView: View {
                         userManager.user.online = true
                         userOnline = await userManager.updateUser(userUpdate: userManager.user)
                         SocketService.shared.socket.emit("userOnline")
+                    }
+                    if await imagePickerManager.downloadMedia(byId: userManager.user.avatar) {
+                        
                     }
                     foundAllUsers = await userManager.fetchAllUsers()
                 }
