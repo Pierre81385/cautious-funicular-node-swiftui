@@ -106,6 +106,8 @@ struct MessageFeed: View {
     var message: MessageData
     @State var userManager: UserVM = UserVM()
     @State var imagePickerManager: ImagePickerVM = ImagePickerVM()
+    @State var userImageManager: ImagePickerVM = ImagePickerVM()
+
     
     // A Set to keep track of messages whose images have already been loaded
     @State private var loadedMessages: Set<String> = []
@@ -132,7 +134,19 @@ struct MessageFeed: View {
             // Text content of the message
             HStack {
                 VStack(alignment: .leading) {
-                    Text(userManager.user.username).font(.headline)
+                    HStack{
+                        if let avatar = userImageManager.images.first {
+                            Image(uiImage: avatar)
+                                .resizable()
+                                .scaledToFill() // Fill the frame while maintaining aspect ratio
+                                .frame(width: 50, height: 50) // Set a fixed size for the circle
+                                .clipShape(Circle()) // Make the image circular
+                                .clipped() // Clip any overflowing parts
+                                .shadow(color: Color.black.opacity(0.2), radius: 10, x: 0, y: 5)
+                                .padding() // Add some spacing
+                        }
+                        Text(userManager.user.username).font(.headline)
+                    }
                     Text(message.textContent)
                 }
                 .rotationEffect(.radians(.pi))
@@ -141,7 +155,13 @@ struct MessageFeed: View {
             }
             .onAppear {
                 Task {
-                    await userManager.fetchUser(byId: message.sender)
+                    if await userManager.fetchUser(byId: message.sender) {
+                        
+                    }
+                    if await userImageManager.downloadMedia(byId: userManager.user.avatar) {
+                        //
+                    }
+                    
                 }
                 
                 // Check if images for this message have already been loaded
@@ -170,6 +190,7 @@ struct SenderMessage: View {
     var message: MessageData
     @State var userManager: UserVM = UserVM()
     @State var imagePickerManager: ImagePickerVM = ImagePickerVM()
+    @State var userImageManager: ImagePickerVM = ImagePickerVM()
     
     // A Set to keep track of messages whose images have already been loaded
     @State private var loadedMessages: Set<String> = []
@@ -197,7 +218,19 @@ struct SenderMessage: View {
             HStack {
                 Spacer()
                 VStack(alignment: .trailing) {
-                    Text(userManager.user.username).font(.headline)
+                    HStack{
+                        Text(userManager.user.username).font(.headline)
+                        if let avatar = userImageManager.images.first {
+                            Image(uiImage: avatar)
+                                .resizable()
+                                .scaledToFill() // Fill the frame while maintaining aspect ratio
+                                .frame(width: 50, height: 50) // Set a fixed size for the circle
+                                .clipShape(Circle()) // Make the image circular
+                                .clipped() // Clip any overflowing parts
+                                .shadow(color: Color.black.opacity(0.2), radius: 10, x: 0, y: 5)
+                                .padding() // Add some spacing
+                        }
+                    }
                     Text(message.textContent)
                 }
                 .rotationEffect(.radians(.pi))
@@ -206,7 +239,12 @@ struct SenderMessage: View {
             .onAppear {
                 // Fetch sender information
                 Task {
-                    await userManager.fetchUser(byId: message.sender)
+                    if await userManager.fetchUser(byId: message.sender) {
+                        
+                    }
+                    if await userImageManager.downloadMedia(byId: userManager.user.avatar) {
+                        //
+                    }
                 }
                 
                 // Check if images for this message have already been loaded
