@@ -12,17 +12,21 @@ import PhotosUI
 struct MediaPickerView: View {
     @Binding var imagePickerVM: ImagePickerVM
     var maxSelection: Int
+    var iconWidth: Double
+    var iconHeight: Double
+    var icon: String
     
     var body: some View {
                                     PhotosPicker(
                                         selection: $imagePickerVM.selectedItems,
+                                        maxSelectionCount: maxSelection,
                                         matching:  .any(of: [.images]),
                                         photoLibrary: .shared()) {
-                                            Image(systemName: "paperclip.circle")
+                                            Image(systemName: icon)
                                                 .resizable()
                                                 .fontWeight(.ultraLight)
                                                 .foregroundStyle(.black)
-                                                .frame(width: 40, height: 40)
+                                                .frame(width: iconWidth, height: iconHeight)
                                         }.onAppear{
                                             imagePickerVM.selectedItems = []
                                         }
@@ -35,6 +39,5 @@ struct MediaPickerView: View {
                                         }
     }
 }
-
 
 

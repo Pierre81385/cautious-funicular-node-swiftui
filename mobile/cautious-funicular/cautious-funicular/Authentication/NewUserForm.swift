@@ -16,20 +16,27 @@ struct NewUserForm: View {
     var body: some View {
         VStack{
             if let preview = imagePickerManager.images.first {
-                Image(uiImage: preview)
-                    .resizable()
-                    .scaledToFill() // Fill the frame while maintaining aspect ratio
-                    .frame(width: 200, height: 200) // Set a fixed size for the circle
-                    .clipShape(Circle()) // Make the image circular
-                    .clipped() // Clip any overflowing parts
-                    .shadow(color: Color.black.opacity(0.2), radius: 10, x: 0, y: 5)
-                    .padding() // Add some spacing
-                    .onTapGesture {
-                        imagePickerManager.images = []
-                        imagePickerManager.imageIds = []
-                    }
+                VStack{
+                    Spacer()
+                    Image(uiImage: preview)
+                        .resizable()
+                        .scaledToFill() // Fill the frame while maintaining aspect ratio
+                        .frame(width: 200, height: 200) // Set a fixed size for the circle
+                        .clipShape(Circle()) // Make the image circular
+                        .clipped() // Clip any overflowing parts
+                        .shadow(color: Color.black.opacity(0.2), radius: 10, x: 0, y: 5)
+                        .onTapGesture {
+                            imagePickerManager.images = []
+                            imagePickerManager.imageIds = []
+                        }
+                    Spacer()
+                }
             } else {
-                MediaPickerView(imagePickerVM: $imagePickerManager, maxSelection: 1).padding()
+                VStack{
+                    Spacer()
+                    MediaPickerView(imagePickerVM: $imagePickerManager, maxSelection: 1, iconWidth: 50, iconHeight: 50, icon: "camera.circle")
+                    Spacer()
+                }
             }
             HStack{
                 VStack{

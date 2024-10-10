@@ -10,6 +10,8 @@
 		B10CF9922CB58FB900F36748 /* NewUserForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10CF9912CB58FB900F36748 /* NewUserForm.swift */; };
 		B10CF9942CB59C8B00F36748 /* UserListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10CF9932CB59C8B00F36748 /* UserListItem.swift */; };
 		B1165AA02CB08BB80061C487 /* ImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1165A9F2CB08BB80061C487 /* ImageModel.swift */; };
+		B180013E2CB84CA7006009F7 /* RecievedMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B180013D2CB84CA7006009F7 /* RecievedMessageView.swift */; };
+		B18001402CB84CAE006009F7 /* SentMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B180013F2CB84CAE006009F7 /* SentMessageView.swift */; };
 		B1E7A42E2CAF15B500FB1C82 /* MessageBubbleComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E7A42D2CAF15B500FB1C82 /* MessageBubbleComponent.swift */; };
 		B1FE5C0C2C8AB71A005FA587 /* cautious_funicularApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C0B2C8AB71A005FA587 /* cautious_funicularApp.swift */; };
 		B1FE5C0E2C8AB71A005FA587 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C0D2C8AB71A005FA587 /* ContentView.swift */; };
@@ -39,6 +41,8 @@
 		B10CF9912CB58FB900F36748 /* NewUserForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewUserForm.swift; sourceTree = "<group>"; };
 		B10CF9932CB59C8B00F36748 /* UserListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListItem.swift; sourceTree = "<group>"; };
 		B1165A9F2CB08BB80061C487 /* ImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageModel.swift; sourceTree = "<group>"; };
+		B180013D2CB84CA7006009F7 /* RecievedMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecievedMessageView.swift; sourceTree = "<group>"; };
+		B180013F2CB84CAE006009F7 /* SentMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentMessageView.swift; sourceTree = "<group>"; };
 		B1E7A42D2CAF15B500FB1C82 /* MessageBubbleComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBubbleComponent.swift; sourceTree = "<group>"; };
 		B1FE5C082C8AB71A005FA587 /* cautious-funicular.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "cautious-funicular.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1FE5C0B2C8AB71A005FA587 /* cautious_funicularApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cautious_funicularApp.swift; sourceTree = "<group>"; };
@@ -139,6 +143,8 @@
 				B1FE5C2A2C9893EC005FA587 /* MessageModel.swift */,
 				B1FE5C382C9DE565005FA587 /* MessageViewModel.swift */,
 				B1FE5C362C9C9686005FA587 /* MessageView.swift */,
+				B180013D2CB84CA7006009F7 /* RecievedMessageView.swift */,
+				B180013F2CB84CAE006009F7 /* SentMessageView.swift */,
 				B1E7A42D2CAF15B500FB1C82 /* MessageBubbleComponent.swift */,
 			);
 			path = Messaging;
@@ -259,10 +265,12 @@
 				B1FE5C1F2C8AB751005FA587 /* SocketIO.swift in Sources */,
 				B1FE5C432CA32930005FA587 /* ImagePickerViewModel.swift in Sources */,
 				B1FE5C222C8BC977005FA587 /* UserModel.swift in Sources */,
+				B180013E2CB84CA7006009F7 /* RecievedMessageView.swift in Sources */,
 				B1FE5C0C2C8AB71A005FA587 /* cautious_funicularApp.swift in Sources */,
 				B1FE5C2B2C9893EC005FA587 /* MessageModel.swift in Sources */,
 				B1FE5C262C8BC99F005FA587 /* UserView.swift in Sources */,
 				B1FE5C332C98A478005FA587 /* ChatModel.swift in Sources */,
+				B18001402CB84CAE006009F7 /* SentMessageView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -19,6 +19,7 @@ struct UserView: View {
         NavigationStack{
             if(showLogin){
                 VStack{
+                    Spacer()
                     VStack{
                         HStack{
                             VStack{

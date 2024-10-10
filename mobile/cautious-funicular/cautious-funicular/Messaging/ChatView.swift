@@ -50,38 +50,7 @@ struct ChatView: View {
                                 Spacer()
                             }
                             Spacer()
-                            VStack{
-                                
-                                if (!hideUsers) {
-                                    ForEach(chatParticipants, id: \._id) {
-                                        user in
-                                        Text("\(user.username) ")
-                                            .foregroundColor(.white)  // White text (icon color)
-                                            .padding()  // Add padding to make the button larger
-                                            .background(RoundedRectangle(cornerSize: CGSize(width: 5, height: 5)).fill(Color.black))  // Circular black background
-                                            .shadow(color: .black.opacity(0.3), radius: 5, x: 0, y: 5)  // Drop shadow
-                                    }
-                                }
-                                Button(action: {
-                                    hideUsers.toggle()
-                                }, label: {
-                                    if(hideUsers) {
-                                        Image(systemName: "person")
-                                            .foregroundColor(.white)  // White text (icon color)
-                                            .padding()
-                                            .background(Circle().fill(Color.black))  // Circular black background
-                                            .shadow(color: .black.opacity(0.3), radius: 5, x: 0, y: 5)  // Drop shadow
-                                    } else {// Drop shadow
-                                        Image(systemName: "chevron.up")
-                                            .foregroundColor(.white)  // White text (icon color)
-                                            .padding()  // Add padding to make the button larger
-                                            .background(Circle().fill(Color.black))  // Circular black background
-                                            .shadow(color: .black.opacity(0.3), radius: 5, x: 0, y: 5)  // Drop shadow
-                                    }
-                                })
-                                Spacer()
-                                
-                            }.padding()
+                            
                         }.padding()
                         Spacer()
                     }.padding()

@@ -19,12 +19,10 @@ import CryptoKit
             print("Creating a new user.")
             guard let url = URL(string: "\(baseURL)/new") else { return false }
 
-            // Create the request
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-            // Prepare the JSON body
             let body: [String: Any] = [
                 "identifier": generateUserIdentifier(user.username),
                 "online": user.online,
@@ -35,16 +33,13 @@ import CryptoKit
                 "uploads": user.uploads
             ]
 
-            // Convert body to JSON data
             guard let jsonData = try? JSONSerialization.data(withJSONObject: body, options: []) else { return false}
 
             request.httpBody = jsonData
 
             do {
-                // Perform the request
                 let (_, response) = try await URLSession.shared.data(for: request)
 
-                // Ensure we received an HTTP 200 response
                 if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 201 {
                     print("New user successfully added to MongoDB.")
                     return true
@@ -57,7 +52,6 @@ import CryptoKit
                 self.error = "Error submitting data: \(error.localizedDescription)"
                 print(self.error)
                 return false
-
             }
         }
     
@@ -85,7 +79,6 @@ import CryptoKit
     
     func authenticateUser() async -> Bool {
         print("Attempting to authenticate a user.")
-        //a very basic authentication
         
         guard let url = URL(string: "\(baseURL)/user/\(user.username)") else { return false }
         print("Sending request to \(url)")

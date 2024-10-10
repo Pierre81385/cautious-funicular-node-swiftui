@@ -67,39 +67,46 @@ struct ProfileView: View {
                     }
                 }
                 
-                if !collapseProfile {
-                    Text("Username: \(userManager.user.username)")
-                    Text("UID: \(userManager.user._id ?? "")")
-                    Text("Email: \(userManager.user.email)")
-                    
-                    if userManager.user.online {
-                        VStack {
-                            Image(systemName: "wifi").padding()
-                                .onTapGesture {
-                                    userManager.user.online = false
-                                    Task {
-                                        await userManager.updateUser(userUpdate: userManager.user)
-                                    }
-                                    SocketService.shared.socket.emit("userOffline")
+             
+                    if !collapseProfile {
+                        Text("Username: \(userManager.user.username)")
+                        Text("UID: \(userManager.user._id ?? "")")
+                        Text("Email: \(userManager.user.email)")
+                        
+                        HStack{
+                            if userManager.user.online {
+                                VStack {
+                                    Image(systemName: "wifi").foregroundStyle(.green).padding()
+                                        .onTapGesture {
+                                            userManager.user.online = false
+                                            Task {
+                                                await userManager.updateUser(userUpdate: userManager.user)
+                                            }
+                                            SocketService.shared.socket.emit("userOffline")
+                                        }
                                 }
-                            Text("ONLINE").fontWeight(.ultraLight).foregroundStyle(.green)
-                        }
-                        .padding()
-                    } else {
-                        VStack {
-                            Image(systemName: "wifi.slash").padding()
-                                .onTapGesture {
-                                    userManager.user.online = true
-                                    Task {
-                                        await userManager.updateUser(userUpdate: userManager.user)
-                                    }
-                                    SocketService.shared.socket.emit("userOnline")
+                                .padding()
+                            } else {
+                                VStack {
+                                    Image(systemName: "wifi.slash").padding()
+                                        .onTapGesture {
+                                            userManager.user.online = true
+                                            Task {
+                                                await userManager.updateUser(userUpdate: userManager.user)
+                                            }
+                                            SocketService.shared.socket.emit("userOnline")
+                                        }
                                 }
-                            Text("OFFLINE").fontWeight(.ultraLight).foregroundStyle(.red)
+                                .padding()
+                            }
+                            if !userManager.user.uploads.isEmpty {
+                                Button(action: {}, label: {
+                                    Image(systemName: "photo.on.rectangle.angled").foregroundStyle(.black).padding()
+                                })
+                            }
                         }
-                        .padding()
                     }
-                }
+                
                 
                 HStack {
                     VStack {
@@ -126,31 +133,6 @@ struct ProfileView: View {
                         ForEach(userManager.users, id: \._id) { user in
                             if user._id != (userManager.user._id ?? "") {
                                 UserListItem(currentUser: $userManager.user, thisUser: user)
-//                                HStack {
-//                                    if user.online {
-//                                        HStack{
-//                                            Image(systemName: "wifi").foregroundColor(.green)
-//                                            Text(user.username)
-//                                        }
-//                                    } else {
-//                                        HStack{
-//                                            Image(systemName: "wifi.slash").foregroundColor(.gray)
-//                                            Text(user.username)
-//                                        }
-//                                    }
-//                                    Spacer()
-//                                    if(user.online) {
-//                                        Button(action: {
-//                                            startChat = true
-//                                        }, label: {
-//                                            Image(systemName: "chevron.forward").foregroundColor(.black)
-//                                        })
-//                                        .navigationDestination(isPresented: $startChat) {
-//                                            ChatView(sender: $userManager.user, to: user).navigationBarBackButtonHidden(true)
-//                                        }
-//                                    }
-//                                }
-//                                .padding()
                             }
                         }
                     }
