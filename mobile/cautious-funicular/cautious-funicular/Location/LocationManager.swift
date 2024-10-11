@@ -12,7 +12,6 @@ import Observation
 
 @Observable class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     private let locationManager = CLLocationManager()
-    
     var authorizationStatus: CLAuthorizationStatus?
     var currentLocation: CLLocation?
     var currentAddress: String = ""
