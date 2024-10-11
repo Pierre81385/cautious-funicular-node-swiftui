@@ -31,7 +31,7 @@ struct ImageGalleryView: View {
                         } else {
                             Image(uiImage: img)
                                 .resizable()
-                                .scaledToFill() // Fill the frame while maintaining aspect ratio
+                                .scaledToFit() // Fill the frame while maintaining aspect ratio
                                 .frame(height: screenWidth*0.9) // Set a fixed height for each image
                                 .cornerRadius(20) // Apply corner radius for rounded corners
                                 .clipped() // Clip any overflowing parts

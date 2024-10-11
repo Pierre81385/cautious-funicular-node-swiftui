@@ -12,6 +12,7 @@ struct UserListItem: View {
     var thisUser: UserData
     @State var imagePickerManager: ImagePickerVM = ImagePickerVM()
     @State var startChat: Bool = false
+    @State var showGallery: Bool = false
     
     var body: some View {
         HStack {
@@ -35,6 +36,15 @@ struct UserListItem: View {
                     Text(thisUser.username)
                     Image(systemName: "wifi.slash").foregroundColor(.gray)
                 }
+            }
+            if !thisUser.uploads.isEmpty {
+                Button(action: {
+                    showGallery = true
+                }, label: {
+                    Image(systemName: "photo.on.rectangle.angled").foregroundStyle(.black).padding()
+                }).sheet(isPresented: $showGallery, content: {
+                    ImageGalleryView(images: thisUser.uploads)
+                })
             }
             Spacer()
             if(thisUser.online) {
