@@ -34,25 +34,38 @@ struct UserView: View {
                             Text("Don't have an account?")
                             Button("Register", action: {
                                 showLogin = false
+                            }).foregroundStyle(.gray)
+                        }
+                    }
+                        TextField("Username", text: $userManager.user.username)
+                        .tint(.black)
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
+                        .padding()
+                        
+                        SecureField("Password", text: $userManager.user.password)
+                        .tint(.black)
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
+                        .padding()
+                        if(new) {
+                            SecureField("Verify Password", text: $verifyPassword).padding()
+                        }
+                        Button("Submit", action: {
+                            Task{
+                                success = await userManager.authenticateUser()
+                            }
+                        }).navigationDestination(isPresented: $success, destination: {
+                                ProfileView(currentUser: userManager.user).navigationBarBackButtonHidden(true)
                             })
-                        }
-                    }
-                    TextField("Username", text: $userManager.user.username).padding()
-                    SecureField("Password", text: $userManager.user.password).padding()
-                    if(new) {
-                        SecureField("Verify Password", text: $verifyPassword).padding()
-                    }
-                    Button("Submit", action: {
-                        
-                        Task{
-                            success = await userManager.authenticateUser()
-                        }
-                        
-                    }).tint(.black).padding()
-                        .navigationDestination(isPresented: $success, destination: {
-                            ProfileView(currentUser: userManager.user).navigationBarBackButtonHidden(true)
-                        })
-                    
+                        .fontWeight(.bold)
+                                                .foregroundColor(.white)
+                                                .padding()
+                                                .background(
+                                                    RoundedRectangle(cornerRadius: 8)
+                                                        .fill(Color.black)
+                                                        .shadow(color: .gray.opacity(0.4), radius: 4, x: 2, y: 2)
+                                                )
                 }
                 .onAppear{
                     SocketService.shared.socket.disconnect()
@@ -64,7 +77,7 @@ struct UserView: View {
     }
 }
 
-
 #Preview {
     UserView()
 }
+

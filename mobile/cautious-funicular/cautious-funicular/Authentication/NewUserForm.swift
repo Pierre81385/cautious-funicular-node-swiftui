@@ -59,11 +59,11 @@ struct NewUserForm: View {
             SecureField("Verify Password", text: $verifyPassword).padding()
             Button("Submit & Test Login", action: {
                
-                    if(userManager.user.email.isEmpty || userManager.user.username.isEmpty || userManager.user.password.isEmpty) {
+                if(userManager.user.avatar.count < 10 || userManager.user.email.isEmpty || userManager.user.username.isEmpty || userManager.user.password.isEmpty) {
                         print("Alert: Please complete the form!")
                     } else {
                         Task{
-                           await imagePickerManager.uploadMedia()
+                            await imagePickerManager.uploadMedia()
                             
                             userManager.user.avatar = imagePickerManager.imageIds[0]
                             
@@ -76,6 +76,4 @@ struct NewUserForm: View {
     }
 }
 
-//#Preview {
-//    NewUserForm()
-//}
+

@@ -15,6 +15,7 @@ struct ProfileView: View {
     @State var showGroupMessage: Bool = false
     @State var selectedGroup: Bool = false
     @State var userAvatar: UIImage?
+    @State var showGallery: Bool = false
 
     var body: some View {
         NavigationStack {
@@ -100,8 +101,12 @@ struct ProfileView: View {
                                 .padding()
                             }
                             if !userManager.user.uploads.isEmpty {
-                                Button(action: {}, label: {
+                                Button(action: {
+                                    showGallery = true
+                                }, label: {
                                     Image(systemName: "photo.on.rectangle.angled").foregroundStyle(.black).padding()
+                                }).sheet(isPresented: $showGallery, content: {
+                                    ImageGalleryView(images: userManager.user.uploads)
                                 })
                             }
                         }

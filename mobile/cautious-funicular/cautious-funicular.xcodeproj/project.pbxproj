@@ -12,6 +12,7 @@
 		B1165AA02CB08BB80061C487 /* ImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1165A9F2CB08BB80061C487 /* ImageModel.swift */; };
 		B180013E2CB84CA7006009F7 /* RecievedMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B180013D2CB84CA7006009F7 /* RecievedMessageView.swift */; };
 		B18001402CB84CAE006009F7 /* SentMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B180013F2CB84CAE006009F7 /* SentMessageView.swift */; };
+		B18001422CB88328006009F7 /* ProfileImageGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18001412CB88328006009F7 /* ProfileImageGalleryView.swift */; };
 		B1E7A42E2CAF15B500FB1C82 /* MessageBubbleComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E7A42D2CAF15B500FB1C82 /* MessageBubbleComponent.swift */; };
 		B1FE5C0C2C8AB71A005FA587 /* cautious_funicularApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C0B2C8AB71A005FA587 /* cautious_funicularApp.swift */; };
 		B1FE5C0E2C8AB71A005FA587 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FE5C0D2C8AB71A005FA587 /* ContentView.swift */; };
@@ -43,6 +44,7 @@
 		B1165A9F2CB08BB80061C487 /* ImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageModel.swift; sourceTree = "<group>"; };
 		B180013D2CB84CA7006009F7 /* RecievedMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecievedMessageView.swift; sourceTree = "<group>"; };
 		B180013F2CB84CAE006009F7 /* SentMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentMessageView.swift; sourceTree = "<group>"; };
+		B18001412CB88328006009F7 /* ProfileImageGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageGalleryView.swift; sourceTree = "<group>"; };
 		B1E7A42D2CAF15B500FB1C82 /* MessageBubbleComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBubbleComponent.swift; sourceTree = "<group>"; };
 		B1FE5C082C8AB71A005FA587 /* cautious-funicular.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "cautious-funicular.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1FE5C0B2C8AB71A005FA587 /* cautious_funicularApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cautious_funicularApp.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 				B1FE5C252C8BC99F005FA587 /* UserView.swift */,
 				B10CF9912CB58FB900F36748 /* NewUserForm.swift */,
 				B1FE5C272C8E3195005FA587 /* ProfileView.swift */,
+				B18001412CB88328006009F7 /* ProfileImageGalleryView.swift */,
 				B10CF9932CB59C8B00F36748 /* UserListItem.swift */,
 			);
 			path = Authentication;
@@ -249,6 +252,7 @@
 				B1FE5C352C98A5D6005FA587 /* ChatViewModel.swift in Sources */,
 				B10CF9922CB58FB900F36748 /* NewUserForm.swift in Sources */,
 				B10CF9942CB59C8B00F36748 /* UserListItem.swift in Sources */,
+				B18001422CB88328006009F7 /* ProfileImageGalleryView.swift in Sources */,
 				B1FE5C452CA32A07005FA587 /* ImageView.swift in Sources */,
 				B1FE5C3E2CA130F3005FA587 /* LocationView.swift in Sources */,
 				B1E7A42E2CAF15B500FB1C82 /* MessageBubbleComponent.swift in Sources */,

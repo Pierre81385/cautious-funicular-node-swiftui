@@ -27,7 +27,7 @@ struct MessageFeed: View {
                     Image(uiImage: img)
                         .resizable()
                         .scaledToFill() // Fill the frame while maintaining aspect ratio
-                        .frame(width: 300) // Set a fixed height for each image
+                        .frame(width: 300) // Set a fixed width for each image
                         .cornerRadius(20) // Apply corner radius for rounded corners
                         .clipped() // Clip any overflowing parts
                         .rotationEffect(.degrees(180)) // Rotate the image 180 degrees
