@@ -53,7 +53,6 @@ import Observation
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
             self.currentLocation = location
-            convertLocationToAddress(location: location)
         }
     }
     

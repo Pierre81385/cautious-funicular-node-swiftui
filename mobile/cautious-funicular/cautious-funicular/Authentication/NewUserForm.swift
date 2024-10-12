@@ -11,6 +11,7 @@ struct NewUserForm: View {
     @State var userManager: UserVM = UserVM()
     @State var imagePickerManager: ImagePickerVM = ImagePickerVM()
     @State var verifyPassword: String = ""
+    @State var success: Bool = false
     @Binding var showLogin: Bool
     
     var body: some View {
@@ -51,27 +52,39 @@ struct NewUserForm: View {
                 Text("Already have an account?")
                 Button("Login", action: {
                     showLogin = true
-                })
+                }).tint(.gray)
             }
             TextField("Email", text: $userManager.user.email).autocorrectionDisabled(true).textInputAutocapitalization(TextInputAutocapitalization.never).padding()
             TextField("Username", text: $userManager.user.username).padding()
             SecureField("Password", text: $userManager.user.password).padding()
             SecureField("Verify Password", text: $verifyPassword).padding()
-            Button("Submit & Test Login", action: {
+            Button("Submit & Login", action: {
                
-                if(userManager.user.avatar.count < 10 || userManager.user.email.isEmpty || userManager.user.username.isEmpty || userManager.user.password.isEmpty) {
+                if(userManager.user.email.isEmpty || userManager.user.username.isEmpty || userManager.user.password.isEmpty) {
                         print("Alert: Please complete the form!")
                     } else {
                         Task{
                             await imagePickerManager.uploadMedia()
-                            
-                            userManager.user.avatar = imagePickerManager.imageIds[0]
-                            
-                            showLogin = await userManager.createNewUser()
+                                
+                                userManager.user.avatar = imagePickerManager.imageIds[0]
+                                
+                                if await userManager.createNewUser() {
+                                    success = await userManager.authenticateUser()
+                                }
                         }
                     }
                 
-            }).tint(.black).padding()
+            }).fontWeight(.bold)
+                .foregroundColor(.white)
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(Color.black)
+                        .shadow(color: .gray.opacity(0.4), radius: 4, x: 2, y: 2)
+                )
+                .navigationDestination(isPresented: $success, destination: {
+                    ProfileView().navigationBarBackButtonHidden(true)
+                })
         }
     }
 }

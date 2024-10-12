@@ -1,9 +1,11 @@
 import SwiftUI
+import CoreLocation
 
 struct ProfileView: View {
     var currentUser: UserData?
     @State var userManager: UserVM = UserVM()
     @State var imagePickerManager: ImagePickerVM = ImagePickerVM()
+    @State var locationManager: LocationManager = LocationManager()
     @State var userOnline: Bool = false
     @State var foundUser: Bool = false
     @State var foundAllUsers: Bool = false
@@ -73,6 +75,14 @@ struct ProfileView: View {
                         Text("Username: \(userManager.user.username)")
                         Text("UID: \(userManager.user._id ?? "")")
                         Text("Email: \(userManager.user.email)")
+                        HStack{
+                            Text("longitude: \(locationManager.currentLocation?.coordinate.longitude ?? 0.0)")
+                            Text("latitude: \(locationManager.currentLocation?.coordinate.latitude ?? 0.0)")
+                        }.onAppear{
+                            locationManager.convertLocationToAddress(location: locationManager.currentLocation ?? CLLocation(latitude: 0, longitude: 0))
+                        }
+                        Text(locationManager.currentAddress).multilineTextAlignment(.center)
+                        
                         
                         HStack{
                             if userManager.user.online {

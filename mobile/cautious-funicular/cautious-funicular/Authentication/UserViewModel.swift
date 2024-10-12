@@ -30,7 +30,9 @@ import CryptoKit
                 "email": user.email,
                 "password": user.password,
                 "avatar": user.avatar,
-                "uploads": user.uploads
+                "uploads": user.uploads,
+                "longitude": user.longitude,
+                "latitude": user.latitude
             ]
 
             guard let jsonData = try? JSONSerialization.data(withJSONObject: body, options: []) else { return false}
@@ -178,7 +180,9 @@ import CryptoKit
             "email": userUpdate.email,
             "password": userUpdate.password,
             "avatar": userUpdate.avatar,
-            "uploads": userUpdate.uploads
+            "uploads": userUpdate.uploads,
+            "longitude": userUpdate.longitude,
+            "latitude": userUpdate.latitude
         ]
 
         guard let jsonData = try? JSONSerialization.data(withJSONObject: body, options: []) else { return false }

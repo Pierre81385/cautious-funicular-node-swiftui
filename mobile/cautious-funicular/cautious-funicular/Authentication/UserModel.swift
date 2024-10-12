@@ -16,6 +16,8 @@ struct UserData: Codable, Equatable {
     var password: String
     var avatar: String
     var uploads: [String]
+    var longitude: Double
+    var latitude: Double
     var dateCreated: Date?
     var dateUpdated: Date?
 
@@ -28,6 +30,8 @@ struct UserData: Codable, Equatable {
         case password
         case avatar
         case uploads
+        case longitude
+        case latitude
         case dateCreated
         case dateUpdated
     }
@@ -43,6 +47,8 @@ struct UserData: Codable, Equatable {
         password = try container.decode(String.self, forKey: .password)
         avatar = try container.decode(String.self, forKey: .avatar)
         uploads = try container.decode([String].self, forKey: .uploads)
+        longitude = try container.decode(Double.self, forKey: .longitude)
+        latitude = try container.decode(Double.self, forKey: .latitude)
         
         // Try decoding dateCreated and dateUpdated as Unix timestamps
         if let dateCreatedTimestamp = try container.decodeIfPresent(Double.self, forKey: .dateCreated) {
@@ -64,6 +70,8 @@ struct UserData: Codable, Equatable {
         try container.encode(password, forKey: .password)
         try container.encode(avatar, forKey: .avatar)
         try container.encode(uploads, forKey: .uploads)
+        try container.encode(longitude, forKey: .longitude)
+        try container.encode(latitude, forKey: .latitude)
         
         // Encode dates as Unix timestamps (seconds since 1970)
         if let dateCreated = dateCreated {
@@ -75,7 +83,7 @@ struct UserData: Codable, Equatable {
     }
     
     // Init method with default values
-    init(_id: String = "", identifier: Double = 0, online: Bool = false, username: String = "", email: String = "", password: String = "", avatar: String = "", uploads: [String] = [], dateCreated: Date? = nil, dateUpdated: Date? = nil) {
+    init(_id: String = "", identifier: Double = 0, online: Bool = false, username: String = "", email: String = "", password: String = "", avatar: String = "", uploads: [String] = [], longitude: Double = 0.0, latitude: Double = 0.0, dateCreated: Date? = nil, dateUpdated: Date? = nil) {
         self._id = _id
         self.identifier = identifier
         self.online = online
@@ -84,6 +92,8 @@ struct UserData: Codable, Equatable {
         self.password = password
         self.avatar = avatar
         self.uploads = uploads
+        self.longitude = longitude
+        self.latitude = latitude
         self.dateCreated = dateCreated
         self.dateUpdated = dateUpdated
     }

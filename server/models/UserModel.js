@@ -34,12 +34,20 @@ const userSchema = new Schema(
     },
     avatar: {
       type: String,
-      required: false
+      required: true
     },
     uploads: {
       type: [String], // Array of user IDs (or names/emails)
       required: true
     },
+    longitude: {
+      type: Number,
+      required: true
+    }, 
+    latitude: {
+      type: Number,
+      required: true
+    }
   },
   { timestamps: true } // Adds createdAt and updatedAt timestamps automatically
 );
