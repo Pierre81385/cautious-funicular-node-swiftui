@@ -18,6 +18,7 @@ struct ProfileView: View {
     @State var selectedGroup: Bool = false
     @State var userAvatar: UIImage?
     @State var showGallery: Bool = false
+    @State var locationOff: Bool = false
 
     var body: some View {
         NavigationStack {
@@ -55,7 +56,7 @@ struct ProfileView: View {
                     VStack {
                         Divider()
                     }
-                    Text("My Profile")
+                    Text("My Details")
                         .fontWeight(.ultraLight)
                         .font(.system(size: 26))
                     
@@ -75,15 +76,23 @@ struct ProfileView: View {
                         Text("Username: \(userManager.user.username)")
                         Text("UID: \(userManager.user._id ?? "")")
                         Text("Email: \(userManager.user.email)")
-                        HStack{
-                            Text("longitude: \(locationManager.currentLocation?.coordinate.longitude ?? 0.0)")
-                            Text("latitude: \(locationManager.currentLocation?.coordinate.latitude ?? 0.0)")
-                        }.onAppear{
-                            locationManager.convertLocationToAddress(location: locationManager.currentLocation ?? CLLocation(latitude: 0, longitude: 0))
+                        if let myLocation = locationManager.currentLocation {
+                            HStack{
+                                Text("longitude: \(myLocation.coordinate.longitude)")
+                                Text("latitude: \(myLocation.coordinate.latitude)")
+                            }.onAppear{
+                                locationManager.convertLocationToAddress(location: myLocation)
+                            }
+                            Text(locationManager.currentAddress).multilineTextAlignment(.center)
+                                .onChange(of: locationManager.currentAddress) {
+                                    userManager.user.longitude = (locationManager.currentLocation?.coordinate.longitude)!
+                                    userManager.user.latitude = (locationManager.currentLocation?.coordinate.latitude)!
+                                    Task {
+                                        await userManager.updateUser(userUpdate: userManager.user)
+                                    }
+                                    
+                                }
                         }
-                        Text(locationManager.currentAddress).multilineTextAlignment(.center)
-                        
-                        
                         HStack{
                             if userManager.user.online {
                                 VStack {
@@ -110,6 +119,13 @@ struct ProfileView: View {
                                 }
                                 .padding()
                             }
+                            VStack {
+                                        if locationManager.authorizationStatus == .authorizedAlways || locationManager.authorizationStatus == .authorizedWhenInUse {
+                                            Image(systemName: "location.fill").foregroundStyle(.blue).padding()
+                                        } else {
+                                            Text("Authorization Status: \(locationManager.authorizationStatus?.rawValue)")
+                                        }
+                                    }
                             if !userManager.user.uploads.isEmpty {
                                 Button(action: {
                                     showGallery = true

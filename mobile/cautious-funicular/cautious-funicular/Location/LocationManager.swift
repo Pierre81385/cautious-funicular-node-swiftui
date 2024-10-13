@@ -25,15 +25,19 @@ import Observation
         checkAuthorizationStatus()
     }
     
-    // Check for location authorization
+    // Check location services authorization
     func checkAuthorizationStatus() {
-        switch locationManager.authorizationStatus {
+        let status = locationManager.authorizationStatus // Use instance property
+
+        switch status {
         case .notDetermined:
             locationManager.requestWhenInUseAuthorization()
         case .authorizedWhenInUse, .authorizedAlways:
             locationManager.startUpdatingLocation()
         case .denied, .restricted:
-            errorMessage = "Location access denied. Please enable location services."
+            DispatchQueue.main.async {
+                self.errorMessage = "Location access denied. Please enable location services."
+            }
         default:
             break
         }
@@ -90,11 +94,22 @@ import Observation
         }
     }
     
-    // Handle authorization status changes
+    // Method to capture changes in the authorization status
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        checkAuthorizationStatus()
+        authorizationStatus = manager.authorizationStatus
+
+        switch authorizationStatus {
+        case .authorizedWhenInUse, .authorizedAlways:
+            locationManager.startUpdatingLocation()
+        case .denied, .restricted:
+            DispatchQueue.main.async {
+                self.errorMessage = "Location access denied. Please enable location services."
+            }
+        default:
+            break
+        }
     }
-    
+
     // Handle location manager errors
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         errorMessage = "Location update failed: \(error.localizedDescription)"
