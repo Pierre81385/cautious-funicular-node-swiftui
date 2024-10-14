@@ -9,6 +9,8 @@ import SwiftUI
 import MapKit
 
 struct UserMapView: View {
+    @State var sender: UserData?
+    @State var recipient: UserData?
     @State var locationManager: LocationManager = LocationManager()
     @State private var position: MapCameraPosition = .userLocation(fallback: .automatic)
     

@@ -90,7 +90,6 @@ struct ProfileView: View {
                                     Task {
                                         await userManager.updateUser(userUpdate: userManager.user)
                                     }
-                                    
                                 }
                         }
                         HStack{

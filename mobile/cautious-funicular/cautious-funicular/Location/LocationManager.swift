@@ -43,6 +43,10 @@ import Observation
         }
     }
     
+    func updateLocationOnce() {
+        locationManager.requestLocation()
+    }
+    
     // Start updating the location
     func startUpdatingLocation() {
         locationManager.startUpdatingLocation()

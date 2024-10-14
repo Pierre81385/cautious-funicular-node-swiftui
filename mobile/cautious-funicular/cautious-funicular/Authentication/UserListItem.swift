@@ -46,6 +46,13 @@ struct UserListItem: View {
                     ImageGalleryView(images: thisUser.uploads)
                 })
             }
+            if thisUser.longitude != 0 {
+                Button(action: {}, label: {
+                    Image(systemName: "location.fill").foregroundStyle(.blue).padding()
+                })
+            } else {
+                Image(systemName: "location.slash").foregroundColor(.gray)
+            }
             Spacer()
             if(thisUser.online) {
                 Button(action: {
