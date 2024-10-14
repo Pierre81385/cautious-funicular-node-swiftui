@@ -1,8 +1,13 @@
 # cautious-funicular-node-swiftui
 
-Currently a chat application to direct message users who are online with realtime updates.
+A chat application to direct message users who are online with realtime updates.
 
-# App
+- [About](#about)
+- [Websockets](#websockets)
+- [API](#api)
+
+
+# About
 
 Node/Express server hosts the API allowing the apps conneting to it to perform CRUD operations on the data stored in MongoDB (using Mongoose)
 
@@ -52,7 +57,7 @@ As a user I can chat with other users.
 
 # API
 
-## - User Endpoints
+### - User Endpoints
 
 POST "Create new user" http://localhost:3000/users/new
 
@@ -66,7 +71,7 @@ PUT "Update user by user _id" http://localhost:3000/users/{user._id}
 
 DELETE "Delete user by user _id" http://localhost:3000/users/{user._id}
 
-## - Chat Endpoints
+### - Chat Endpoints
 
 POST "Create new chat" http://localhost:3000/chats/new
 
@@ -78,7 +83,7 @@ PUT "Update chat by chat identifier" http://localhost:3000/chats/{chat.identifie
 * The identifier is created by converting the usernames to UInt64, then adding them together and limiting the number of digits to 12
 * This way the identifier created is the same value calculated from either the sender side or recipient side ensure a unique chat is only created once
 
-## - Image Endpoint
+### - Image Endpoint
 
 POST "Upload Image" http://localhost:3000/imgs/upload
 
