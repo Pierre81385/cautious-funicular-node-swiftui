@@ -14,6 +14,8 @@ As a user I can create an account with a username, email and password combinatio
 - Need to add an array to store images uploaded by a specific user so they can view all of the images and delete ones they don't want seen anymore.  
 - Need to add the user location general (city or address) and current exact with websocket updates
 
+![register](https://github.com/Pierre81385/cautious-funicular-node-swiftui/blob/main/Assets/CreateAccount.gif?raw=true)
+
 As a user when I login I am taken to a page showing me my profile details and users to chat with.  
 - I can toggle my online / offline status and this updates for other users in realtime
 - I can chat with users who are online by tapping their name
@@ -25,6 +27,8 @@ As a user I can chat with other users.
 - Need to add the ability to update the chat as a group chat
 - Need to be able to make chats private
 - Need to add chat sharing through QR code
+
+![message](https://github.com/Pierre81385/cautious-funicular-node-swiftui/blob/main/Assets/SendMessages.gif?raw=true)
 
 # Websockets
 
