@@ -14,6 +14,8 @@ const jwt = require('jsonwebtoken');
 
 dotenv.config();
 
+const JWT_SECRET = process.env.JWT_SECRET;
+
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {

@@ -61,7 +61,7 @@ struct UserListItem: View {
                         }
                         if thisUser.longitude != 0.0 {
                             Button(action: {
-    //                            showMap = true
+                                showMap = true
                             }, label: {
                                 Image(systemName: "location.fill").foregroundStyle(.blue)
                             }).sheet(isPresented: $showMap, content: {

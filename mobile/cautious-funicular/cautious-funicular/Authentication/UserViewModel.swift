@@ -82,28 +82,54 @@ import CryptoKit
     func authenticateUser() async -> Bool {
         print("Attempting to authenticate a user.")
         
-        guard let url = URL(string: "\(baseURL)/user/\(user.username)") else { return false }
+        guard let url = URL(string: "\(baseURL)/user/login") else { return false }
         print("Sending request to \(url)")
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        // Create the login payload (assuming `user` has `username` and `password` properties)
+        let loginPayload = [
+            "username": user.username,
+            "password": user.password
+        ]
 
         do {
-            let (data, response) = try await URLSession.shared.data(from: url)
-            print(response)
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                print(httpResponse)
-                let decodedUser = try JSONDecoder().decode(UserData.self, from: data)
-                if (user.password == decodedUser.password) {
-                    self.user = decodedUser
-                    print("User authenticated by password match!")
+            // Convert the login payload to JSON
+            let jsonData = try JSONSerialization.data(withJSONObject: loginPayload)
+            request.httpBody = jsonData
+
+            // Send the request using URLSession
+            let (data, response) = try await URLSession.shared.data(for: request)
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode == 200 {
+                    // Parse the response to the LoginResponse struct
+                    let loginResponse = try JSONDecoder().decode(LoginResponse.self, from: data)
+                    
+                    // Handle successful login, e.g., set user and JWT token
+                    self.user._id = loginResponse.user  // Assuming `user` has an `id` property
+                    let jwtToken = loginResponse.jwt
+                    
+                    // Optionally, store the JWT in UserDefaults or Keychain for later use
+                    UserDefaults.standard.set(jwtToken, forKey: "userToken")
+                    
+                    print("Login successful! JWT Token: \(jwtToken)")
                     return true
+                } else if httpResponse.statusCode == 409 {
+                    self.error = "Username or password is incorrect."
+                    print(self.error)
+                } else if httpResponse.statusCode == 404 {
+                    self.error = "User not found."
+                    print(self.error)
+                } else {
+                    self.error = "Unexpected error: \(httpResponse.statusCode)"
+                    print(self.error)
                 }
-                
-            } else {
-                self.error = "Error: Invalid cridentials"
-                print(self.error)
-                return false
             }
         } catch {
-            self.error = "Error fetching user: \(error.localizedDescription)"
+            self.error = "Error: \(error.localizedDescription)"
             print(self.error)
             return false
         }
@@ -226,4 +252,10 @@ import CryptoKit
         }
     }
 
+}
+
+struct LoginResponse: Codable {
+    let message: String
+    let user: String  // Assuming the user is just the user ID (u._id)
+    let jwt: String
 }

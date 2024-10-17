@@ -80,6 +80,8 @@ struct EntryView: View {
     }
 }
 
+
+
 #Preview {
     EntryView()
 }
