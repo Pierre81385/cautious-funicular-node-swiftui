@@ -8,6 +8,9 @@ const port = 3000;
 const server = http.createServer(app);
 const io = new Server(server);
 const dotenv = require("dotenv");
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
 
 dotenv.config();
 

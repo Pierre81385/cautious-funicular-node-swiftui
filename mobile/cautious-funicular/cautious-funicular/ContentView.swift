@@ -17,7 +17,7 @@ struct ContentView: View {
 //                Text("Socket.IO Client in SwiftUI Mobile").bold().italic()
 //                Text("Check the console for socket events").fontWeight(.ultraLight)
 //            }
-        UserView()
+        EntryView()
             .onAppear{
                         SocketService.shared.socket.connect()
                     }

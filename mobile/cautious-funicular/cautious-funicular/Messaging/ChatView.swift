@@ -45,7 +45,7 @@ struct ChatView: View {
                                         .shadow(color: .black.opacity(0.3), radius: 5, x: 0, y: 5)  // Drop shadow
                                 }).padding()
                                     .navigationDestination(isPresented: $back, destination: {
-                                        ProfileView(currentUser: sender).navigationBarBackButtonHidden(true)
+                                        HomeView(currentUser: sender).navigationBarBackButtonHidden(true)
                                     })
                                 Spacer()
                             }

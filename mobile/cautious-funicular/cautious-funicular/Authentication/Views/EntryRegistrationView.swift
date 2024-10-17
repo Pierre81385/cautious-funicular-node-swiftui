@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NewUserForm: View {
+struct EntryRegistrationView: View {
     @State var userManager: UserVM = UserVM()
     @State var imagePickerManager: ImagePickerVM = ImagePickerVM()
     @State var verifyPassword: String = ""
@@ -15,6 +15,7 @@ struct NewUserForm: View {
     @Binding var showLogin: Bool
     
     var body: some View {
+        
         VStack{
             if let preview = imagePickerManager.images.first {
                 VStack{
@@ -60,19 +61,7 @@ struct NewUserForm: View {
             SecureField("Verify Password", text: $verifyPassword).padding()
             Button("Submit & Login", action: {
                
-                if(userManager.user.email.isEmpty || userManager.user.username.isEmpty || userManager.user.password.isEmpty) {
-                        print("Alert: Please complete the form!")
-                    } else {
-                        Task{
-                            await imagePickerManager.uploadMedia()
-                                
-                                userManager.user.avatar = imagePickerManager.imageIds[0]
-                                
-                                if await userManager.createNewUser() {
-                                    success = await userManager.authenticateUser()
-                                }
-                        }
-                    }
+                createNewUser()
                 
             }).fontWeight(.bold)
                 .foregroundColor(.white)
@@ -83,9 +72,25 @@ struct NewUserForm: View {
                         .shadow(color: .gray.opacity(0.4), radius: 4, x: 2, y: 2)
                 )
                 .navigationDestination(isPresented: $success, destination: {
-                    ProfileView().navigationBarBackButtonHidden(true)
+                    HomeView().navigationBarBackButtonHidden(true)
                 })
         }
+    }
+    
+    func createNewUser() {
+        if(userManager.user.email.isEmpty || userManager.user.username.isEmpty || userManager.user.password.isEmpty) {
+                print("Alert: Please complete the form!")
+            } else {
+                Task{
+                    await imagePickerManager.uploadMedia()
+                        
+                        userManager.user.avatar = imagePickerManager.imageIds[0]
+                        
+                        if await userManager.createNewUser() {
+                            success = await userManager.authenticateUser()
+                        }
+                }
+            }
     }
 }
 

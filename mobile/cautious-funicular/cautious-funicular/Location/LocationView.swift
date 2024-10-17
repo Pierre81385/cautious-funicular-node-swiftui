@@ -19,8 +19,25 @@ struct UserMapView: View {
             if locationManager.authorizationStatus == .denied || locationManager.authorizationStatus == .notDetermined { Text(locationManager.errorMessage ?? "Error loading map.")
             } else {
                 Map(position: $position) {
-                           //Marker("Garage", coordinate: garage)
-                       }
+                    let senderLocation = CLLocationCoordinate2D(latitude: sender?.latitude ?? 0.0, longitude: sender?.longitude ?? 0.0)
+                    if(senderLocation.longitude != 0.0) {
+                        Marker(coordinate: senderLocation, label: {
+                            VStack{
+                                Image(systemName: "person.crop.circle.fill")
+                                Text(sender?.username ?? "")
+                            }
+                        })
+                    }
+                    let recipientLocation = CLLocationCoordinate2D(latitude: recipient?.latitude ?? 0.0, longitude: recipient?.longitude ?? 0.0)
+                    if (recipientLocation.longitude != 0.0) {
+                        Marker(coordinate: recipientLocation, label: {
+                            VStack{
+                                Image(systemName: "person.crop.circle.fill")
+                                Text(recipient?.username ?? "")
+                            }
+                        })
+                    }
+                }
                 .mapStyle(.standard(elevation: .realistic))
                 .mapControls {
                     MapScaleView()

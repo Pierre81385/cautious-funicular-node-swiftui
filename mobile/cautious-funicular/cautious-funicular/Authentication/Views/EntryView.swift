@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct UserView: View {
+struct EntryView: View {
     @State var userManager: UserVM = UserVM()
     @State var verifyPassword: String = ""
     @State var new: Bool = false
@@ -19,6 +19,9 @@ struct UserView: View {
         NavigationStack{
             if(showLogin){
                 VStack{
+                    Spacer()
+                    Image(systemName: "point.3.filled.connected.trianglepath.dotted").resizable()
+                        .frame(width: 160, height: 150)
                     Spacer()
                     VStack{
                         HStack{
@@ -56,7 +59,7 @@ struct UserView: View {
                                 success = await userManager.authenticateUser()
                             }
                         }).navigationDestination(isPresented: $success, destination: {
-                                ProfileView(currentUser: userManager.user).navigationBarBackButtonHidden(true)
+                            HomeView(currentUser: userManager.user).navigationBarBackButtonHidden(true)
                             })
                         .fontWeight(.bold)
                                                 .foregroundColor(.white)
@@ -71,13 +74,13 @@ struct UserView: View {
                     SocketService.shared.socket.disconnect()
                 }
             } else {
-                NewUserForm(showLogin: $showLogin)
+                EntryRegistrationView(showLogin: $showLogin)
             }
         }
     }
 }
 
 #Preview {
-    UserView()
+    EntryView()
 }
 
