@@ -139,13 +139,23 @@ import CryptoKit
     
     func fetchUser(byId userId: String) async -> Bool {
         guard let url = URL(string: "\(baseURL)/\(userId)") else { return false }
+        
+        // Retrieve the JWT token from UserDefaults
+        guard let token = UserDefaults.standard.string(forKey: "userToken") else {
+            self.error = "Error: No token found."
+            return false
+        }
+
+        var request = URLRequest(url: url)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 
         do {
-            let (data, response) = try await URLSession.shared.data(from: url)
+            let (data, response) = try await URLSession.shared.data(for: request)
 
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 let decodedUser = try JSONDecoder().decode(UserData.self, from: data)
                 self.user = decodedUser
+                return true
             } else {
                 self.error = "Error: No user found with that ID."
                 return false
@@ -154,8 +164,6 @@ import CryptoKit
             self.error = "Error fetching user: \(error.localizedDescription)"
             return false
         }
-        
-        return false
     }
     
     func fetchAllUsers() async -> Bool {
@@ -163,26 +171,36 @@ import CryptoKit
             self.error = "Invalid URL."
             return false
         }
+        
+        // Retrieve the JWT token from UserDefaults
+        guard let token = UserDefaults.standard.string(forKey: "userToken") else {
+            self.error = "Error: No token found."
+            return false
+        }
+
+        var request = URLRequest(url: url)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 
         do {
-            let (data, response) = try await URLSession.shared.data(from: url)
+            let (data, response) = try await URLSession.shared.data(for: request)
+            
+            // Ensure response is of type HTTPURLResponse
+            guard let httpResponse = response as? HTTPURLResponse else {
+                self.error = "Error: Invalid response format."
+                return false
+            }
 
-            if let httpResponse = response as? HTTPURLResponse {
-                if httpResponse.statusCode == 200 {
-                    do {
-                        let decodedUsers = try JSONDecoder().decode([UserData].self, from: data)
-                        self.users = decodedUsers
-                        return true
-                    } catch {
-                        self.error = "Error decoding users: \(error.localizedDescription)"
-                        return false
-                    }
-                } else {
-                    self.error = "Error: Unexpected status code \(httpResponse.statusCode)."
+            if httpResponse.statusCode == 200 {
+                do {
+                    let decodedUsers = try JSONDecoder().decode([UserData].self, from: data)
+                    self.users = decodedUsers
+                    return true
+                } catch {
+                    self.error = "Error decoding users: \(error.localizedDescription)"
                     return false
                 }
             } else {
-                self.error = "Error: Invalid response format."
+                self.error = "Error: Unexpected status code \(httpResponse.statusCode)."
                 return false
             }
         } catch {
@@ -190,15 +208,21 @@ import CryptoKit
             return false
         }
     }
-
     
     func updateUser(userUpdate: UserData) async -> Bool {
         print("Updating user!")
         guard let url = URL(string: "\(baseURL)/\(userUpdate._id ?? "NoUser")") else { return false }
+        
+        // Retrieve the JWT token from UserDefaults
+        guard let token = UserDefaults.standard.string(forKey: "userToken") else {
+            self.error = "Error: No token found."
+            return false
+        }
 
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 
         let body: [String: Any] = [
             "online": userUpdate.online,
@@ -232,9 +256,16 @@ import CryptoKit
     
     func deleteUser(byId userId: String) async -> Bool {
         guard let url = URL(string: "\(baseURL)/\(userId)") else { return false }
+        
+        // Retrieve the JWT token from UserDefaults
+        guard let token = UserDefaults.standard.string(forKey: "userToken") else {
+            self.error = "Error: No token found."
+            return false
+        }
 
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 
         do {
             let (_, response) = try await URLSession.shared.data(for: request)

@@ -18,14 +18,14 @@ router.route('/new').post( async (req, res) => {
   });
 
 //http://localhost:3000/users/
-router.route("/").get( (req, res) => {
+router.route("/").get(authenticateToken, (req, res) => {
   User.find()
     .then((users) => res.status(200).json(users))
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
 //http://localhost:3000/users/{user._id}
-router.route("/:id").get( (req, res) => {
+router.route("/:id").get(authenticateToken, (req, res) => {
   User.findById(req.params.id)
     .then((user) => res.status(200).json(user))
     .catch((err) => res.status(400).json("Error: " + err));
@@ -55,7 +55,7 @@ router.route("/user/login").post(async (req, res) => {
               return res.status(200).json({
                 message: "Login Success!",
                 user: u._id,
-                jwt: "Bearer " + token,
+                jwt: token,
               });
             }
           }
@@ -70,7 +70,7 @@ router.route("/user/login").post(async (req, res) => {
 });
 
 //http://localhost:3000/users/user/{user.username}= 
-router.route("/user/:username").get(async (req, res) => {
+router.route("/user/:username").get(authenticateToken, async (req, res) => {
   try {
     console.log(req.params.username); // Log the username to check the incoming request
 
@@ -87,7 +87,7 @@ router.route("/user/:username").get(async (req, res) => {
 });
 
 //http://localhost:3000/users/{user._id}
-router.route("/:id").put(async (req, res) => {
+router.route("/:id").put(authenticateToken, async (req, res) => {
   try {
     const updatedUser = await User.findOneAndUpdate(
       { _id: req.params.id },
@@ -120,7 +120,7 @@ router.route("/:id").put(async (req, res) => {
 });
 
 //http://localhost:3000/users/{user._id}
-router.route("/:id").delete( (req, res) => {
+router.route("/:id").delete(authenticateToken, (req, res) => {
   const { id } = req.params;
   User.findByIdAndDelete(id)
     .then(() => {
